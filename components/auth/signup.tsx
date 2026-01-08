@@ -1,8 +1,9 @@
 "use client"
 import React from 'react'
-import {z} from "zod"
+import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -22,7 +23,7 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils"
 import { FieldDescription } from '../ui/field'
-
+import { SignupAction } from '@/actions/auth'
 export const formSchema = z.object({
   name: z
     .string()
@@ -51,82 +52,92 @@ export const Signup = ({
   className,
   ...props
 }: React.ComponentProps<"div">) => {
+  const [isloading, setIsloading] = React.useState<boolean>(false)
 
-    const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-    name:"",
+      name: "",
       email: "",
       password: "",
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      setIsloading(true)
+      await SignupAction(values.name, values.email, values.password)
+    }
+    catch (err: any) {
+      toast.error(err?.message)
+    }
+    finally{
+       setIsloading(false)
+    }
 
-    console.log(values)
   }
   return (
-  <>
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
-        <CardHeader>
-          <CardTitle>Create new account</CardTitle>
-          <CardDescription>
-            Enter your details to create account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-    <Form {...form} >
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 p-2">
-           <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="John Doe" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-         <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="example@xyz.com" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-         <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input placeholder="********" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-          <Button className='w-full' type="submit">Create Account</Button>
+    <>
+      <div className={cn("flex flex-col gap-6", className)} {...props}>
+        <Card>
+          <CardHeader>
+            <CardTitle>Create new account</CardTitle>
+            <CardDescription>
+              Enter your details to create account
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form {...form} >
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 ">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="John Doe" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="example@xyz.com" type='email' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input placeholder="********" type='password' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button disabled={isloading} className='w-full' type="submit">Create Account</Button>
                 <FieldDescription className="text-center">
                   Already have an account? <a href="/signin">Sign in</a>
                 </FieldDescription>
-          </form>
-           </Form>
-        </CardContent>
-      </Card>
-    </div>
-  </>
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
+      </div>
+    </>
   )
 }
 

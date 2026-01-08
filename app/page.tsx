@@ -1,8 +1,18 @@
 
-export default function Page() {
-return (
-    <>
-    <h3 className="text-green-400 font-bold">Subhan</h3>
-    </>
-)
+import { auth } from "@/lib/auth"
+import { headers } from "next/headers"
+
+export default async function Page() {
+
+const session = await auth.api.getSession({
+        headers: await headers()
+    })
+    if(!session) {
+        return <div>Not authenticated</div>
+    }
+    return (
+        <div>
+            <h1>Welcome {session.user.email}</h1>
+        </div>
+    )
 }
