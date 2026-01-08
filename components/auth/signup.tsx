@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -18,7 +17,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -26,11 +24,11 @@ import { cn } from "@/lib/utils"
 import { FieldDescription } from '../ui/field'
 
 export const formSchema = z.object({
-  // name: z
-  //   .string()
-  //   .trim()
-  //   .min(2, { message: "Name must be at least 2 characters long." })
-  //   .max(50, { message: "Name must be less than 50 characters." }),
+  name: z
+    .string()
+    .trim()
+    .min(2, { message: "Name must be at least 2 characters long." })
+    .max(50, { message: "Name must be less than 50 characters." }),
 
   email: z
     .string()
@@ -49,7 +47,7 @@ export const formSchema = z.object({
     }),
 });
 
-export const Signin = ({
+export const Signup = ({
   className,
   ...props
 }: React.ComponentProps<"div">) => {
@@ -57,6 +55,7 @@ export const Signin = ({
     const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+    name:"",
       email: "",
       password: "",
     },
@@ -71,14 +70,27 @@ export const Signin = ({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
+          <CardTitle>Create new account</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Enter your details to create account
           </CardDescription>
         </CardHeader>
         <CardContent>
     <Form {...form} >
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 p-2">
+           <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input placeholder="John Doe" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
          <FormField
           control={form.control}
           name="email"
@@ -105,9 +117,9 @@ export const Signin = ({
             </FormItem>
           )}
         />
-          <Button className='w-full' type="submit">Login</Button>
+          <Button className='w-full' type="submit">Create Account</Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="/signup">Sign up</a>
+                  Already have an account? <a href="/signin">Sign in</a>
                 </FieldDescription>
           </form>
            </Form>
