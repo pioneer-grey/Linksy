@@ -13,7 +13,7 @@ const queryClient = useQueryClient();
     onSuccess:()=>{
          queryClient.invalidateQueries({ queryKey: ['getPage'] });
     },
-     onError: (error: unknown) => {
+     onError: (error: any) => {
     if (axios.isAxiosError(error)) {
       toast.error(
         error.response?.data?.message ??

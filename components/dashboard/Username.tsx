@@ -59,16 +59,21 @@ const Username = ({ className,
    
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-       
+       try{
             await mutateAsync(values.Username)
+       }
+       catch(err:any){
+        console.log(err)
+       }
+            
     }
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card>
                 <CardHeader>
-                    <CardTitle>Login to your account</CardTitle>
+                    <CardTitle>Claim your username</CardTitle>
                     <CardDescription>
-                        A link in bio built for you.
+                        Secure your unique profile URL.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
