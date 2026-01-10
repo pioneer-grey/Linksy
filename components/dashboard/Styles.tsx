@@ -9,10 +9,14 @@ const Styles = () => {
           <h1 className='text-sm font-bold pt-2 pl-4'>General Styles</h1>
           <div className='flex items-center justify-between border-2 p-2 m-2 rounded-2xl '>
             <p className='text-sm font-light'>Primary Text Color</p>
-            <Input className='w-15' type='color'></Input>
+            <Input className='w-15' type='color' onChange={(e)=>{console.log(e.target.value)}}></Input>
           </div>
           <div className='flex items-center justify-between border-2 p-2 m-2 rounded-2xl'>
             <p className='text-sm font-light'>Primary Background</p>
+            <Input className='w-15' type='color'></Input>
+          </div>
+            <div className='flex items-center justify-between border-2 p-2 m-2 rounded-2xl'>
+            <p className='text-sm font-light'>Desktop Background Color</p>
             <Input className='w-15' type='color'></Input>
           </div>
         </div>

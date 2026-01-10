@@ -15,6 +15,13 @@
       "when": 1767940179897,
       "tag": "0001_talented_zombie",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1768040862726,
+      "tag": "0002_acoustic_marvel_boy",
+      "breakpoints": true
     }
   ]
 }

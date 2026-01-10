@@ -7,6 +7,7 @@ import { Spinner } from '@/components/ui/spinner'
 import Username from "@/components/dashboard/Username"
 import Display from "@/components/dashboard/Display"
 import Styles from "@/components/dashboard/Styles"
+import Content from "@/components/dashboard/Content"
 
 export default function page() {
   // const { data, isLoading } = getPage()
@@ -32,11 +33,12 @@ export default function page() {
   return (
     <>
    <div className="grid grid-cols-12 ">
-    <div className="bg-red-500 text-white col-span-12 md:col-span-3">
-      Dashboard
+    <div className="col-span-12 md:col-span-3">
+      {/* Dashboard
          <Button variant="destructive" onClick={SignoutAction}>
         Logout
-      </Button>
+      </Button> */}
+      <Content></Content>
     </div>
 
     <div className="col-span-12 md:col-span-6">
