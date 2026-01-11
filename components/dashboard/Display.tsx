@@ -5,13 +5,11 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar"
-import {header,styles} from "@/store/types"
+import { useHeader } from '@/store/useHeader';
 
-type props = {
-  styles: styles,
-  header: header
-}
-const Display = ({styles,header}:props) => {
+const Display = () => {
+  const {header}=useHeader()
+
   return (
     <>
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -22,16 +20,16 @@ const Display = ({styles,header}:props) => {
               <Avatar className='w-20 h-20 rounded-full'>
                 <AvatarImage
                   className='object-cover'
-                  src={header.picURL || ""}
-                  alt={header.userName}
+                  src={header?.picURL || ""}
+                  alt={header?.userName}
                 />
-                <AvatarFallback>{header.userName?.slice(0, 2).toUpperCase() ?? "LR"}</AvatarFallback>
+                <AvatarFallback>{header?.userName?.slice(0, 2).toUpperCase() ?? "LR"}</AvatarFallback>
               </Avatar>
             </div>
-            <p className='text-sm font-medium leading-none tracking-tight pb-4'>{header.name}</p>
+            <p className='text-sm font-medium leading-none tracking-tight pb-4'>{header?.name}</p>
             <p
-              className=' max-w-xs text-center text-[11px] leading-snug '
-            >{header.bio}</p>
+              className=' max-w-[70%] text-center text-[11px] leading-snug '
+            >{header?.bio}</p>
           </header>
 
         </div>

@@ -6,10 +6,20 @@ import Username from "@/components/dashboard/Username"
 import Display from "@/components/dashboard/Display"
 import Styles from "@/components/dashboard/Styles"
 import Content from "@/components/dashboard/Content"
-
+import { useHeader } from '@/store/useHeader'
+import { useStyles } from '@/store/useStyles'
 
 export default function page() {
   const { data, isLoading } = getPage()
+  const {setHeader}=useHeader()
+  const {setStyles}=useStyles()
+
+  React.useEffect(()=>{
+    if(data?.success){
+      setHeader(data.header)
+      setStyles(data.styles)
+    }
+  },[data])
 
   if (isLoading) {
     return (
@@ -41,7 +51,7 @@ export default function page() {
     </div>
 
     <div className="col-span-12 md:col-span-6">
-      <Display styles={data.styles} header={data.header}/>
+      <Display/>
     </div>
 
     <div className="col-span-12 md:col-span-3 ">
