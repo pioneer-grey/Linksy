@@ -15,7 +15,7 @@ export default function page() {
   const {setStyles}=useStyles()
 
   React.useEffect(()=>{
-    if(data?.success){
+    if(data?.success && data?.header && data?.styles){
       setHeader(data.header)
       setStyles(data.styles)
     }

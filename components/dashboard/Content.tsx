@@ -16,14 +16,18 @@ import {
 import UploadImg from './content/UploadImg';
 import { ButtonGroup } from "@/components/ui/button-group"
 import HeaderForm from './content/HeaderForm';
-
+import { useHeader } from '@/store/useHeader';
 const Content = () => {
+    const {header}=useHeader()
+
+    if(!header) return null
+    
     return (
         <>
             <div className='bg-card max-h-screen h-full overflow-auto'>
                 <header className='flex justify-center items-center  border-b p-4'>
                     <ButtonGroup>
-                        <Input readOnly defaultValue={process.env.NEXT_PUBLIC_PROJECT_URL} />
+                        <Input readOnly defaultValue={process.env.NEXT_PUBLIC_PROJECT_URL+(header?.userName ?? "")} />
                         <Button
                             className='bg-blue-500 text-white'
                             variant="default" aria-label="Search">
