@@ -11,7 +11,7 @@ type Styles = {
 
     setProfilePictureShadow: (value:number) => void,
     setProfilePictureBorder: (value:number) => void,
-    // setSocialIconSize: (value:number) => void,
+    setSocialIconSize: (value:number) => void,
 
     // setCardColor: (value:string) => void,
     // setCardTextColor: (value:string) => void,
@@ -77,5 +77,14 @@ export const useStyles=create<Styles>()((set)=>({
         }
     }),
 
+    setSocialIconSize:(socialIconSize)=>set((state)=>{
+        if(!state.styles) return state
+        return {
+            styles:{
+                ...state.styles,
+                socialIconSize,
+            },
+        }
+    }),
 
 }))

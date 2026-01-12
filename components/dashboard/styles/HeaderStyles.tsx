@@ -3,7 +3,8 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { styles } from '@/store/types'
+import {HeaderType } from '@/store/types'
+import { UpdateHeaderStyles } from '@/actions/styles'
 import { useStyles } from '@/store/useStyles'
 import { Slider } from '@/components/ui/slider'
 import { cn } from '@/lib/utils'
@@ -17,7 +18,10 @@ export const formSchema = z.object({
 const HeaderStyles = () => {
 
     const { setProfilePictureBorder, setProfilePictureShadow,
-        styles } = useStyles()
+        setSocialIconSize,styles } = useStyles()
+
+    const {mutateAsync}=UpdateHeaderStyles()
+
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -28,14 +32,37 @@ const HeaderStyles = () => {
         },
     })
 
-    async function onSubmit(values: styles) {
-        // try {
-        //   const res = await mutateAsync(values)
-        //   console.log(res)
-        // } catch (err: any) {
-        //   console.log(err)
-        // }
+    async function onSubmit(values: HeaderType) {
+        try {
+          const res = await mutateAsync(values)
+          console.log(res)
+        } catch (err: any) {
+          console.log(err)
+        }
     }
+
+       React.useEffect(() => {
+            let timeout: NodeJS.Timeout
+    
+            const subscription = form.watch((values) => {
+                clearTimeout(timeout)
+                timeout = setTimeout(() => {
+    
+                    const safeValues = {
+                        userName: styles?.userName || "",
+                        profilePictureShadow: values.profilePictureShadow ?? 2,
+                        profilePictureBorder: values.profilePictureBorder ?? 2,
+                        socialIconSize: values.socialIconSize ?? 2,
+                    }
+                    onSubmit(safeValues)
+                }, 5000)
+            })
+            return () => {
+                clearTimeout(timeout)
+                subscription.unsubscribe()
+            }
+        }, [form])
+    
 
     return (
         <>
@@ -68,7 +95,7 @@ const HeaderStyles = () => {
                     />
                     <FormField
                         control={form.control}
-                        name="profilePictureShadow"
+                        name="profilePictureBorder"
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
@@ -98,11 +125,14 @@ const HeaderStyles = () => {
                                     <div className='flex items-center justify-between border-2 p-4 m-2 rounded-2xl'>
                                         <p className='text-sm  font-light'>Social Icon Size</p>
                                         <Slider
-                                            defaultValue={[50]}
                                             min={1}
                                             max={10}
+                                            value={[field.value]}
                                             step={1}
                                             className={cn("w-[40%]")}
+                                            onValueChange={(val: number[]) =>{ 
+                                                field.onChange(val[0])
+                                                setSocialIconSize(val[0])}}
                                         />
                                     </div>
                                 </FormControl>

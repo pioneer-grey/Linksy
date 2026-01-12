@@ -23,3 +23,25 @@ export type styles= {
     bio: string | null;
     picURL: string | null;
   }
+
+export type GeneralType=Pick<styles,
+    "userName"|
+    "primaryTextColor"|
+    "primaryBackground"|
+    "desktopBackgroundColor">
+
+export type HeaderType=Pick<styles,
+    "userName"|
+    "profilePictureShadow"|
+    "profilePictureBorder"|
+    "socialIconSize">
+
+export type CardType=Pick<styles,
+    "userName"|
+    "cardColor"|
+    "cardTextColor"|
+    "cardCorner"|
+    "cardBorder"|
+    "cardBorderColor"|
+    "cardShadow"|
+    "cardSpacing">

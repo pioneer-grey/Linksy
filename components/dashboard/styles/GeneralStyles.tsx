@@ -4,8 +4,11 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { styles } from '@/store/types'
+import { UpdateGeneralStyles } from '@/actions/styles'
 import { useStyles } from '@/store/useStyles'
+import { GeneralType } from '@/store/types'
+
+
 
 export const formSchema = z.object({
     primaryTextColor: z.string(),
@@ -18,6 +21,8 @@ const GeneralStyles = () => {
     const { setDesktopBackgroundColor, setPrimaryBackground,
         setPrimaryTextColor, styles } = useStyles()
 
+    const { mutateAsync } = UpdateGeneralStyles()
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -28,14 +33,37 @@ const GeneralStyles = () => {
     })
 
 
-    async function onSubmit(values: styles) {
-        // try {
-        //   const res = await mutateAsync(values)
-        //   console.log(res)
-        // } catch (err: any) {
-        //   console.log(err)
-        // }
+    async function onSubmit(values: GeneralType) {
+        try {
+            const res = await mutateAsync(values)
+            console.log(res)
+        } catch (err: any) {
+            console.log(err)
+        }
     }
+
+    React.useEffect(() => {
+        let timeout: NodeJS.Timeout
+
+        const subscription = form.watch((values) => {
+            clearTimeout(timeout)
+            timeout = setTimeout(() => {
+
+                const safeValues = {
+                    userName: styles?.userName || "",
+                    primaryTextColor: values.primaryTextColor || "",
+                    primaryBackground: values.primaryBackground || "",
+                    desktopBackgroundColor: values.desktopBackgroundColor || "",
+                }
+                onSubmit(safeValues)
+            }, 5000)
+        })
+        return () => {
+            clearTimeout(timeout)
+            subscription.unsubscribe()
+        }
+    }, [form])
+
 
     return (
         <>
@@ -71,7 +99,10 @@ const GeneralStyles = () => {
                                         <p className='text-sm font-light'>Primary Background</p>
                                         <Input className='w-15' type='color'
                                             {...field}
-                                            onChange={(e) => { setPrimaryBackground(e.target.value) }}></Input>
+                                            onChange={(e) => {
+                                                field.onChange(e)
+                                                setPrimaryBackground(e.target.value)
+                                            }}></Input>
                                     </div>
                                 </FormControl>
                             </FormItem>
@@ -87,7 +118,10 @@ const GeneralStyles = () => {
                                         <p className='text-sm font-light'>Desktop Background Color</p>
                                         <Input className='w-15' type='color'
                                             {...field}
-                                            onChange={(e) => { setDesktopBackgroundColor(e.target.value) }}></Input>
+                                            onChange={(e) => {
+                                                field.onChange(e)
+                                                setDesktopBackgroundColor(e.target.value)
+                                            }}></Input>
                                     </div>
                                 </FormControl>
                             </FormItem>
