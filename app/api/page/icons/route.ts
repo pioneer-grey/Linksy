@@ -1,34 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db/db";
-import { social,page } from "@/db/schema";
+import { social, page } from "@/db/schema";
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers";
 import { sql, eq } from "drizzle-orm";
 
-export async function GET(){
+export async function GET() {
     try {
         const session = await auth.api.getSession({
             headers: await headers()
         })
         if (!session?.user?.id) return NextResponse.error();
 
-        const userId=session.user.id
-        const userNameresult =await db.select({
-            userName:page.userName}).from(page).where(eq(page.userId,userId))
-        
-        const userName=userNameresult[0].userName
+        const userId = session.user.id
+        const userNameresult = await db.select({
+            userName: page.userName
+        }).from(page).where(eq(page.userId, userId))
 
-        const result=await db.select({
-            id:social.id,
-            url:social.url,
-            type:social.type,
-            order:social.order
-        }).from(social).where(eq(social.userName,userName))
-         .orderBy(social.order)
-       
+        const userName = userNameresult[0].userName
+
+        const result = await db.select({
+            id: social.id,
+            url: social.url,
+            type: social.type,
+            order: social.order
+        }).from(social).where(eq(social.userName, userName))
+            .orderBy(social.order)
+
         return NextResponse.json({
-            success:true,
-            icons:result
+            success: true,
+            icons: result
         })
 
     }
@@ -46,8 +47,16 @@ export async function POST(req: NextRequest) {
         })
         if (!session?.user?.id) return NextResponse.error();
 
-        const { userName,icons } = await req.json()
-    
+        const userId = session?.user?.id
+
+        const userNameresult = await db.select({
+            userName: page.userName
+        }).from(page).where(eq(page.userId, userId))
+
+        const userName = userNameresult[0].userName
+
+        const { icons } = await req.json()
+
         await db.transaction(async (tx) => {
 
             const [{ nextOrder }] = await tx.select({
@@ -66,7 +75,7 @@ export async function POST(req: NextRequest) {
         }
         )
         return NextResponse.json({
-            success:true
+            success: true
         })
 
     }
@@ -84,12 +93,12 @@ export async function DELETE(req: NextRequest) {
         })
         if (!session?.user?.id) return NextResponse.error();
 
-        const {id} = await req.json()
-    
-       await db.delete(social).where(eq(social.id,id))
+        const { id } = await req.json()
+
+        await db.delete(social).where(eq(social.id, id))
         return NextResponse.json({
-            success:true,
-            message:"Icon Successfully Deleted"
+            success: true,
+            message: "Icon Successfully Deleted"
         })
 
     }
@@ -99,3 +108,35 @@ export async function DELETE(req: NextRequest) {
         }, { status: 500 })
     }
 }
+
+export async function PUT(req:NextRequest){
+     try {
+        const session = await auth.api.getSession({
+            headers: await headers()
+        })
+        if (!session?.user?.id) return NextResponse.error();
+
+        const {icons}=await req.json()
+
+        for(const i of icons){
+            await db.update(social).set({
+                url:i.url,
+                order:i.order
+            })
+            .where(eq(social.id,i.id))
+        }
+
+        return NextResponse.json({
+            success: true,
+            message:"Icons Updated"
+        })
+
+    }
+    catch(err) {
+        console.log(err)
+        return NextResponse.json({
+            message: "Internal Server Error"
+        }, { status: 500 })
+    }
+}
+    

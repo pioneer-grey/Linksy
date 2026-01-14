@@ -6,9 +6,10 @@ import {
   useSortable,
 } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
-
+import { useIcon } from '@/store/useIcons'
 
 const SortableItem = ({ item, deleteFunc }: any) => {
+    const{setURL}=useIcon()
 const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: item.id })
 
@@ -26,6 +27,7 @@ const { attributes, listeners, setNodeRef, transform, transition } =
           type="text"
           placeholder={IconDetails(item.type)?.label ?? "Unknown"}
           defaultValue={item?.url || ""}
+          onChange={(e)=>setURL(item?.id,e.target.value)}
         />
         <span>
           <Trash2

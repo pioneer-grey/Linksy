@@ -32,10 +32,9 @@ const FormSchema = z.object({
 
 
 
-const IconSelect = () => {
+const IconDialog = () => {
   const [open, setOpen] = React.useState<boolean>(false)
   const { isPending, mutateAsync } = AddIcons()
-  const { styles } = useStyles()
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -45,9 +44,7 @@ const IconSelect = () => {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
-      if (!styles?.userName) return
       const values = {
-        userName: styles?.userName,
         icons: data.icons
       }
       const res = mutateAsync(values)
@@ -123,4 +120,4 @@ const IconSelect = () => {
   )
 }
 
-export default IconSelect
+export default IconDialog

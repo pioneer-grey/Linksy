@@ -131,10 +131,4 @@ export const social = pgTable("social",{
     url: text("url"),
     order: integer("order").notNull(),
     createdAt: timestamp("created_at").defaultNow(),
-  },
-  (table) => ({
-    userOrderUnique: uniqueIndex("user_order_unique").on(
-      table.userName,
-      table.order
-    ),
-  }));
+  });

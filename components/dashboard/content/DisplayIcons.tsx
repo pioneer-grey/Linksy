@@ -31,10 +31,6 @@ const DisplayIcons = () => {
     }
   }
 
-  React.useEffect(()=>{
-    console.log(icon)
-  },[icon])
-  
   const sensors = useSensors(useSensor(PointerSensor))
 
   const handleDragEnd = (event: DragEndEvent) => {

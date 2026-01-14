@@ -3,9 +3,11 @@ import {icon} from "./types"
 
 type Icon ={
     icon:icon[]|null,
+    lastState:"delete"|"url"|"initial"|"reorder",
     setIcon:(icon:icon[])=>void,
     deleteIcon:(id:string)=>void,
-    reorderIcons: (activeId: string, overId: string) => void
+    reorderIcons: (activeId: string, overId: string) => void,
+    setURL:(id:string,value:string)=>void
 }
 
 export const useIcon=create<Icon>()((set) => ({
@@ -16,7 +18,9 @@ export const useIcon=create<Icon>()((set) => ({
       icon: state.icon
         ? state.icon.filter((item) => item.id !== id)
         : null,
+       lastState:"delete" 
     })),
+
     reorderIcons: (activeId, overId) =>   
     set((state) => {
       if (!state.icon || activeId === overId) return state
@@ -35,6 +39,18 @@ export const useIcon=create<Icon>()((set) => ({
           ...item,
           order: index,
         })),
+        lastState:"reorder"
       }
     }),
+  setURL: (id: string, value: string) =>
+  set((state) => ({
+    icon: state.icon?.map((t) =>
+      t.id === id
+        ? { ...t, url: value }  
+        : t       
+    ) ?? null,
+    lastState:"url"
+  })),
+
+  lastState:"initial",
 }))
