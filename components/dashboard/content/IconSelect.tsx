@@ -11,13 +11,11 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogFooter,
@@ -25,24 +23,14 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
-import {
-  IconBrandFacebook,
-  IconBrandYoutube,
-  IconBrandInstagram,
-  IconBrandTiktok
-} from '@tabler/icons-react';
+import { IconsList } from "@/lib/IconsList";
 import { AddIcons } from "@/actions/Icons";
 const FormSchema = z.object({
   icons: z
     .array(z.string())
 });
 
-const IconsList = [
-  { value: "fb", label: "Facebook", icon: IconBrandFacebook },
-  { value: "yt", label: "Youtube", icon: IconBrandYoutube },
-  { value: "tiktok", label: "Tiktok", icon: IconBrandTiktok },
-  { value: "insta", label: "Instagram", icon: IconBrandInstagram },
-];
+
 
 const IconSelect = () => {
   const [open,setOpen]=React.useState<boolean>(false)
@@ -112,11 +100,11 @@ const IconSelect = () => {
               <DialogFooter
                 className="mt-10"
               >
-                <DialogClose>
-                  <Button variant={"ghost"}>
-                    Cancel
-                  </Button>
-                </DialogClose>
+                <DialogClose asChild>
+  <Button variant="ghost">
+    Cancel
+  </Button>
+</DialogClose>
                 <Button
 
                   disabled={isPending}

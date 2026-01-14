@@ -18,9 +18,20 @@ import UploadImg from './content/UploadImg';
 import { ButtonGroup } from "@/components/ui/button-group"
 import HeaderForm from './content/HeaderForm';
 import IconsForm from './content/IconsForm';
+import { useIcon } from '@/store/useIcons'
+import { getIcons } from '@/actions/Icons'
 import { useHeader } from '@/store/useHeader';
 const Content = () => {
+    const{data,isLoading}=getIcons()
+    const{setIcon,icon}=useIcon()
     const { header } = useHeader()
+    
+    React.useEffect(()=>{
+        if(data?.icons){
+            setIcon(data?.icons)
+             console.log(icon)
+        }
+    },[data])
 
     if (!header) return null
 

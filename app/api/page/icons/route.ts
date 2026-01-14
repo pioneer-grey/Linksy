@@ -1,28 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db/db";
-import { social } from "@/db/schema";
+import { social,page } from "@/db/schema";
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers";
 import { sql, eq } from "drizzle-orm";
 
-
-type Icons = {
-    userName: string,
-    type: string,
-    url?: string,
-    order: number
-
-}
-export async function GET(req:NextRequest){
+export async function GET(){
     try {
         const session = await auth.api.getSession({
             headers: await headers()
         })
         if (!session?.user?.id) return NextResponse.error();
 
-        const {userName}=await req.json()
+        const userId=session.user.id
+        const userNameresult =await db.select({
+            userName:page.userName}).from(page).where(eq(page.userId,userId))
+        
+        const userName=userNameresult[0].userName
 
-        const result=await db.select().from(social).where(eq(social.userName,userName))
+        const result=await db.select({
+            id:social.id,
+            url:social.url,
+            type:social.type,
+            order:social.order
+        }).from(social).where(eq(social.userName,userName))
        
         return NextResponse.json({
             success:true,
@@ -65,6 +66,29 @@ export async function POST(req: NextRequest) {
         )
         return NextResponse.json({
             success:true
+        })
+
+    }
+    catch {
+        return NextResponse.json({
+            message: "Internal Server Error"
+        }, { status: 500 })
+    }
+}
+
+export async function DELETE(req: NextRequest) {
+    try {
+        const session = await auth.api.getSession({
+            headers: await headers()
+        })
+        if (!session?.user?.id) return NextResponse.error();
+
+        const {id} = await req.json()
+    
+       await db.delete(social).where(eq(social.id,id))
+        return NextResponse.json({
+            success:true,
+            message:"Icon Successfully Deleted"
         })
 
     }
