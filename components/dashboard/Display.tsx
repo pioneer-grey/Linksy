@@ -2,7 +2,7 @@ import React from 'react'
 import { cn } from "@/lib/utils";
 import { useStyles } from '@/store/useStyles';
 import Header from './display/Header';
-
+import Icons from "./display/Icons"
 
 
 const Display = () => {
@@ -20,6 +20,7 @@ const Display = () => {
           }}
         >
           <Header />
+          <Icons/>
         </div>
       </div>
     </>

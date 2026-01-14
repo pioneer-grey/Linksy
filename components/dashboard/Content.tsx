@@ -32,8 +32,6 @@ const Content = () => {
             setIcon(data?.icons)
         }
     },[data])
-
-
     if (!header) return null
 
     return (

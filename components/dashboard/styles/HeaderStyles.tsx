@@ -28,7 +28,7 @@ const HeaderStyles = () => {
         defaultValues: {
             profilePictureShadow: styles?.profilePictureShadow ?? 2,
             profilePictureBorder: styles?.profilePictureBorder ?? 2,
-            socialIconSize: styles?.socialIconSize ?? 2,
+            socialIconSize: styles?.socialIconSize ?? 20,
         },
     })
 
@@ -125,8 +125,8 @@ const HeaderStyles = () => {
                                     <div className='flex items-center justify-between border-2 p-4 m-2 rounded-2xl'>
                                         <p className='text-sm  font-light'>Social Icon Size</p>
                                         <Slider
-                                            min={1}
-                                            max={10}
+                                            min={18}
+                                            max={28}
                                             value={[field.value]}
                                             step={1}
                                             className={cn("w-[40%]")}
