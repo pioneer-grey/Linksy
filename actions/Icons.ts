@@ -45,9 +45,9 @@ export const DeleteIcon=()=>{
       const res = await axios.delete("/api/page/icons",{data:{id}})
       return res.data
     },
-    onSuccess:()=>{
-         queryClient.invalidateQueries({ queryKey: ['getIcons'] });
-    },
+    // onSuccess:()=>{
+    //      queryClient.invalidateQueries({ queryKey: ['getIcons'] });
+    // },
      onError: (error: any) => {
     if (axios.isAxiosError(error)) {
       toast.error(

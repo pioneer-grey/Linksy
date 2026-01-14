@@ -33,7 +33,7 @@ const FormSchema = z.object({
 
 
 const IconSelect = () => {
-  const [open,setOpen]=React.useState<boolean>(false)
+  const [open, setOpen] = React.useState<boolean>(false)
   const { isPending, mutateAsync } = AddIcons()
   const { styles } = useStyles()
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -68,7 +68,7 @@ const IconSelect = () => {
 
   return (
     <>
-      <Dialog open={open} onOpenChange={()=>setOpen(!open)}>
+      <Dialog open={open} onOpenChange={() => setOpen(!open)}>
         <DialogTrigger asChild>
           <Button variant="ghost"><Plus /></Button>
         </DialogTrigger>
@@ -101,10 +101,10 @@ const IconSelect = () => {
                 className="mt-10"
               >
                 <DialogClose asChild>
-  <Button variant="ghost">
-    Cancel
-  </Button>
-</DialogClose>
+                  <Button variant="ghost">
+                    Cancel
+                  </Button>
+                </DialogClose>
                 <Button
 
                   disabled={isPending}

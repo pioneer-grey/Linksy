@@ -1,58 +1,74 @@
-import React from 'react'
-import { useIcon } from '@/store/useIcons'
-import { GripVertical, Trash2 } from 'lucide-react';
-import { Input } from '@/components/ui/input'
-import { DeleteIcon } from '@/actions/Icons';
-import { toast } from 'sonner';
+"use client"
+
+import React from "react"
+import { useIcon } from "@/store/useIcons"
+import { DeleteIcon } from "@/actions/Icons"
+import SortableItem from "./SortableItem"
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core"
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable"
+
 
 const DisplayIcons = () => {
-    const { mutateAsync } = DeleteIcon()
+  const { mutateAsync } = DeleteIcon()
+  const { icon, deleteIcon, reorderIcons} = useIcon()
 
-    const { icon } = useIcon()
-    const deleteIcon = async(id: string) => {
-        try {
-            const res= mutateAsync(id)
-            toast.promise(res,{
-                success:"Icon Deleted",
-                loading:"Deleting Icon...",
-                error:"Failed to delete icon"
-            })
-            await res
-        }
-        catch (err: any) {
-            console.log(err)
-        }
+  const deleteFunc = async (id: string) => {
+    try {
+      deleteIcon(id)
+      await mutateAsync(id)
+    } catch (err: any) {
+      console.log(err)
     }
-        return (
-            <>
-                <div className='pt-2'>
-                    <h1>Icons</h1>
-                    {icon?.map((item, i) => (
-                        <div key={item.id}>
-                            <div className='mt-2 flex items-center gap-1'>
-                                <span>
-                                    <GripVertical
-                                        className='cursor-pointer'
-                                        size={18}
-                                    />
-                                </span>
-                                <Input type="text"
-                                    placeholder='https://www.example.com'
-                                    defaultValue={item?.url || ""}
-                                />
-                                <span>
-                                    <Trash2
-                                        className='hover:text-red-500'
-                                        size={18} 
-                                        onClick={()=>deleteIcon(item?.id)}
-                                        />
-                                </span>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </>
-        )
-    }
+  }
 
-    export default DisplayIcons
+  React.useEffect(()=>{
+    console.log(icon)
+  },[icon])
+  
+  const sensors = useSensors(useSensor(PointerSensor))
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event
+    if (!over || active.id === over.id) return
+
+    reorderIcons(active.id as string, over.id as string)
+  }
+
+  return (
+    <div className="pt-2">
+      <h1>Icons</h1>
+      {icon && (
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={icon?.map((i) => i.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            {icon.map((item) => (
+              <SortableItem
+                key={item.id}
+                item={item}
+                deleteFunc={deleteFunc}
+              />
+            ))}
+          </SortableContext>
+        </DndContext>
+      )}
+    </div>
+  )
+}
+
+export default DisplayIcons

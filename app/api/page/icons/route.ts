@@ -24,6 +24,7 @@ export async function GET(){
             type:social.type,
             order:social.order
         }).from(social).where(eq(social.userName,userName))
+         .orderBy(social.order)
        
         return NextResponse.json({
             success:true,
