@@ -34,7 +34,8 @@ export async function GET() {
             blocks: result
         })
     }
-    catch {
+    catch (err) {
+        console.log(err)
         return NextResponse.json({
             message: "Internal Server Error"
         }, { status: 500 })
@@ -56,7 +57,7 @@ export async function POST(req: NextRequest) {
 
         const userName = userNameresult[0].userName
 
-        const { newBlock } = await req.json()
+        const { type, title, url } = await req.json()
 
         await db.transaction(async (tx) => {
 
@@ -68,18 +69,19 @@ export async function POST(req: NextRequest) {
 
             await tx.insert(block).values({
                 userName,
-                type: newBlock.type,
-                title: newBlock.title,
-                url: newBlock.url,
+                type: type,
+                title: title,
+                url: url,
                 order: nextOrder + 1
             })
         })
         return NextResponse.json({
-            message:"Block Created ",
-            success:true,
+            message: "Block Created ",
+            success: true,
         })
     }
-    catch {
+    catch (err) {
+        console.log(err)
         return NextResponse.json({
             message: "Internal Server Error"
         }, { status: 500 })
@@ -94,12 +96,12 @@ export async function DELETE(req: NextRequest) {
         })
         if (!session?.user?.id) return NextResponse.error();
 
-        const{id}=await req.json()
-        await db.delete(block).where(eq(block.id,id))
+        const { id } = await req.json()
+        await db.delete(block).where(eq(block.id, id))
 
         return NextResponse.json({
-            message:"Block Deleted",
-            success:true
+            message: "Block Deleted",
+            success: true
         })
 
     }
@@ -117,20 +119,19 @@ export async function PUT(req: NextRequest) {
         })
         if (!session?.user?.id) return NextResponse.error();
 
-        const{blocks}=await req.json()
+        const { id, title, url } = await req.json()
 
-        for(const b of blocks){
-            await db.update(block).set({
-                order:b.order,
-                title:b.title,
-                url:b.url
-            }).where(eq(block.id,b.id))
-        }
-       
+
+        await db.update(block).set({
+            title: title,
+            url: url
+        }).where(eq(block.id, id))
+
+
 
         return NextResponse.json({
-            message:"Blocks Updated",
-            success:true
+            message: "Blocks Updated",
+            success: true
         })
 
     }

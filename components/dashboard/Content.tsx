@@ -6,7 +6,7 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Info} from 'lucide-react';
+import { Info } from 'lucide-react';
 import { IconExternalLink } from '@tabler/icons-react';
 import {
     Accordion,
@@ -19,20 +19,56 @@ import { ButtonGroup } from "@/components/ui/button-group"
 import HeaderForm from '../content/Header/HeaderForm';
 import IconsForm from '../content/Icons/IconsForm';
 import { useIcon } from '@/store/useIcons'
-import { getIcons} from '@/actions/Icons'
+import { getIcons, UpdateIcons } from '@/actions/Icons'
 import { useHeader } from '@/store/useHeader';
+import { useBlock } from '@/store/useBlocks'
+import { getBlocks } from '@/actions/block'
 import CardForm from '../content/card/CardForm';
 
 const Content = () => {
-    const{data,isLoading}=getIcons()
-    const{setIcon,}=useIcon()
+    const { data} = getIcons()
+    const { setIcon,icon,lastState } = useIcon()
     const { header } = useHeader()
-    
-    React.useEffect(()=>{
-        if(data?.icons){
+     const{mutateAsync}=UpdateIcons()
+    const { data: blockData } = getBlocks()
+    const {setBlock } = useBlock()
+
+    // Set State Icon and Block  
+    React.useEffect(() => {
+        if (blockData?.blocks) {
+            setBlock(blockData?.blocks)
+        }
+    }, [blockData])
+
+
+    React.useEffect(() => {
+        if (data?.icons) {
             setIcon(data?.icons)
         }
-    },[data])
+    }, [data])
+
+    // On Update State Run useEffect 
+     React.useEffect(()=>{
+    if(!icon) return 
+    if(lastState=="delete"|| lastState=="initial") return 
+    const submit=async()=>{
+        try{
+            await mutateAsync(icon)
+        }
+        catch(err){
+            console.log(err)
+        }
+    }
+
+    let timeout: NodeJS.Timeout
+    timeout=setTimeout(()=>{
+        submit()
+    },5000)
+    return ()=>{
+        clearTimeout(timeout)
+    }
+  },[icon])
+
     if (!header) return null
 
     return (
@@ -43,7 +79,7 @@ const Content = () => {
                         <Input readOnly defaultValue={process.env.NEXT_PUBLIC_PROJECT_URL + (header?.userName ?? "")} />
                         <Button
                             variant="default" aria-label="visit">
-                            <IconExternalLink/>
+                            <IconExternalLink />
                         </Button>
                     </ButtonGroup>
                 </header>
@@ -98,7 +134,7 @@ const Content = () => {
                                 </Tooltip>
                                 Icons</AccordionTrigger>
                             <AccordionContent className='h-auto'>
-                                <IconsForm/>
+                                <IconsForm />
                             </AccordionContent>
                         </AccordionItem>
                         <AccordionItem value="cards">
@@ -113,7 +149,7 @@ const Content = () => {
                                 </Tooltip>
                                 Blocks</AccordionTrigger>
                             <AccordionContent className='h-auto'>
-                               <CardForm/>
+                                <CardForm />
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>
