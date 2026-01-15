@@ -1,6 +1,6 @@
 import React from 'react'
 import CardDialog from './CardDialog'
-
+import DisplayBlock from './DisplayBlock'
 const CardForm = () => {
   return (
     <>
@@ -8,6 +8,7 @@ const CardForm = () => {
       <h1>New Block</h1>
        <CardDialog/>
     </div>
+    <DisplayBlock/>
     </>
    
   )

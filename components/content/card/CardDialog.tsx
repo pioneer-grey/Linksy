@@ -12,7 +12,7 @@ import { Plus } from 'lucide-react'
 import ButtonBlock from './Block/ButtonBlock'
 import { addBlock } from "@/actions/block"
 import { toast } from "sonner"
-
+import { Link,MailPlus } from 'lucide-react';
 const CardDialog = () => {
   const { mutateAsync: addMutate } = addBlock()
   
@@ -47,14 +47,31 @@ const CardDialog = () => {
             {/* All Card Block Dialog Content */}
             <div className='flex flex-wrap justify-center items-center gap-2 '>
               <ButtonBlock
-                trigger="URL Button"
+                trigger={
+                  <div className='flex gap-2 items-center'>
+                    <Link/>
+                    <h1>URL Button</h1>
+                  </div> 
+                }
                 dialogTitle="URL Button"
                 inputTitle="URL"
                 inputPlaceholder="https://www.example.com"
                 type="url"
                 onSubmit={createBlockFunc}
               />
-
+              <ButtonBlock
+                trigger={
+                  <div className='flex gap-2 items-center'>
+                    <MailPlus/>
+                    <h1>Email Button</h1>
+                  </div> 
+                }
+                dialogTitle="Email Button"
+                inputTitle="Email Address"
+                inputPlaceholder="example@xyz.com"
+                type="email"
+                onSubmit={createBlockFunc}
+              />
 
 
             </div>

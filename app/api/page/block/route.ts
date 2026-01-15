@@ -20,7 +20,7 @@ export async function GET() {
         const userName = userNameresult[0].userName
 
         const result = await db.select({
-            id: block,
+            id: block.id,
             title: block.title,
             url: block.url,
             type: block.type,
