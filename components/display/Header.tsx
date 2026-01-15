@@ -8,7 +8,7 @@ import {
 import { useHeader } from '@/store/useHeader';
 import { useStyles } from '@/store/useStyles';
 
-const shadowMap = [
+export const shadowMap = [
     "0 0 0 rgba(0,0,0,0)",
     "0 1px 2px rgba(0,0,0,0.05)",
     "0 2px 4px rgba(0,0,0,0.08)",

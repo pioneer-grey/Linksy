@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Plus } from 'lucide-react'
-import ButtonBlock from './Block/ButtonBlock'
+import ButtonBlockForm from './BlockForm/ButtonBlockForm'
 import { addBlock } from "@/actions/block"
 import { toast } from "sonner"
 import { Link,MailPlus } from 'lucide-react';
@@ -46,7 +46,7 @@ const CardDialog = () => {
             </DialogHeader>
             {/* All Card Block Dialog Content */}
             <div className='flex flex-wrap justify-center items-center gap-2 '>
-              <ButtonBlock
+              <ButtonBlockForm
                 trigger={
                   <div className='flex gap-2 items-center'>
                     <Link/>
@@ -59,7 +59,7 @@ const CardDialog = () => {
                 type="url"
                 onSubmit={createBlockFunc}
               />
-              <ButtonBlock
+              <ButtonBlockForm
                 trigger={
                   <div className='flex gap-2 items-center'>
                     <MailPlus/>

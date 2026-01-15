@@ -1,5 +1,5 @@
 import React from 'react'
-import { GripVertical, Trash2 } from "lucide-react"
+import { GripVertical, Trash2, Pencil  } from "lucide-react"
 import {
   useSortable,
 } from "@dnd-kit/sortable"
@@ -31,7 +31,12 @@ const SortableBlock = ({ item, deleteFunc }: Props) => {
             <p className=''>{item.title}</p>
           </div>
           <span>
-            <Trash2
+            <div className='flex gap-1 items-center'>
+              <Pencil
+              className="hover:text-blue-500"
+              size={16}
+              />
+              <Trash2
               className="hover:text-red-500"
               size={18}
               onClick={(e) => {
@@ -39,6 +44,8 @@ const SortableBlock = ({ item, deleteFunc }: Props) => {
                 deleteFunc(item.id)
               }}
             />
+            </div>
+            
           </span>
         </div>
       </div>

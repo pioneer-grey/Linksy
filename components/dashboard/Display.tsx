@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { useStyles } from '@/store/useStyles';
 import Header from '../display/Header';
 import Icons from "../display/Icons"
-
+import Blocks from "@/components/display/Blocks"
 
 const Display = () => {
   const { styles } = useStyles()
@@ -21,6 +21,7 @@ const Display = () => {
         >
           <Header />
           <Icons/>
+          <Blocks/>
         </div>
       </div>
     </>
