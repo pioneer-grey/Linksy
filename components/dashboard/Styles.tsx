@@ -2,9 +2,9 @@ import React from 'react'
 import { useStyles } from '@/store/useStyles'
 import { ModeToggle } from "@/components/theme-mode"
 import Userdropdown from "@/components/user-dropdown"
-import GeneralStyles from './styles/GeneralStyles'
-import HeaderStyles from './styles/HeaderStyles'
-import CardStyles from './styles/CardStyles'
+import GeneralStyles from '../styles/GeneralStyles'
+import HeaderStyles from '../styles/HeaderStyles'
+import CardStyles from '../styles/CardStyles'
 const Styles = () => {
   const { styles } = useStyles()
 

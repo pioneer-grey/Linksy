@@ -95,6 +95,7 @@ function DialogFooter({
   ...props
 }: React.ComponentProps<"div"> & {
   showCloseButton?: boolean
+   variant?: "default" | "bare";
 }) {
   return (
     <div

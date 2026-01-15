@@ -14,13 +14,14 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
-import UploadImg from './content/UploadImg';
+import UploadImg from '../content/Profile/UploadImg';
 import { ButtonGroup } from "@/components/ui/button-group"
-import HeaderForm from './content/HeaderForm';
-import IconsForm from './content/IconsForm';
+import HeaderForm from '../content/Header/HeaderForm';
+import IconsForm from '../content/Icons/IconsForm';
 import { useIcon } from '@/store/useIcons'
 import { getIcons} from '@/actions/Icons'
 import { useHeader } from '@/store/useHeader';
+import CardForm from '../content/card/CardForm';
 
 const Content = () => {
     const{data,isLoading}=getIcons()
@@ -98,6 +99,21 @@ const Content = () => {
                                 Icons</AccordionTrigger>
                             <AccordionContent className='h-auto'>
                                 <IconsForm/>
+                            </AccordionContent>
+                        </AccordionItem>
+                        <AccordionItem value="cards">
+                            <AccordionTrigger className='no-underline hover:no-underline decoration-none flex items-center gap-2'>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Info size={14} />
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        Add Card.
+                                    </TooltipContent>
+                                </Tooltip>
+                                Cards</AccordionTrigger>
+                            <AccordionContent className='h-auto'>
+                               <CardForm/>
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>

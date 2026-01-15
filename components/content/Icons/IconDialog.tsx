@@ -96,6 +96,7 @@ const IconDialog = () => {
               />
               <DialogFooter
                 className="mt-10"
+
               >
                 <DialogClose asChild>
                   <Button variant="ghost">
