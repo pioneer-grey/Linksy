@@ -1,9 +1,6 @@
 import React from 'react'
 import IconDialog from "@/components/content/Icons/IconDialog"
 import DisplayIcons from './DisplayIcons'
-import { useIcon } from '@/store/useIcons'
-import { UpdateIcons } from '@/actions/Icons'
-
 
 const IconsForm = () => {
   

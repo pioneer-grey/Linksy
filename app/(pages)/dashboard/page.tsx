@@ -1,26 +1,17 @@
 "use client"
 import React from 'react'
-import { getPage } from '@/actions/dashboard'
+import { useDashboard } from '@/hooks/useDashboard'
 import { Spinner } from '@/components/ui/spinner'
 import Username from "@/components/dashboard/Username"
 import Display from "@/components/dashboard/Display"
 import Styles from "@/components/dashboard/Styles"
 import Content from "@/components/dashboard/Content"
-import { useHeader } from '@/store/useHeader'
-import { useStyles } from '@/store/useStyles'
 
 export default function page() {
-  const { data, isLoading } = getPage()
-  const {setHeader}=useHeader()
-  const {setStyles}=useStyles()
+  const {data,isLoading}=useDashboard()
 
-  React.useEffect(()=>{
-    if(data?.success && data?.header && data?.styles){
-      setHeader(data.header)
-      setStyles(data.styles)
-    }
-  },[data])
 
+  
   if (isLoading) {
     return (
       <div className='h-screen flex justify-center items-center'>

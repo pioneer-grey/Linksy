@@ -25,6 +25,7 @@ type props={
 
 const ButtonBlockForm = ({type,trigger,onSubmit,dialogTitle,inputTitle,inputPlaceholder}:props) => {
   const[loading,setLoading] =useState<boolean>(false)
+  const[open,setOpen] =useState<boolean>(false)
   const [title,setTitle]=useState<string>("")
   const [url,setUrl]=useState<string>("")
   
@@ -32,7 +33,7 @@ const ButtonBlockForm = ({type,trigger,onSubmit,dialogTitle,inputTitle,inputPlac
     try{
       setLoading(true)
        await onSubmit?.({type,title,url})
-      
+      setOpen(false)
     }catch(err){
       console.log(err)
     }finally{
@@ -43,7 +44,7 @@ const ButtonBlockForm = ({type,trigger,onSubmit,dialogTitle,inputTitle,inputPlac
 
   return (
    <>
-    <Dialog>
+    <Dialog open={open} onOpenChange={()=>setOpen(!open)}>
       <form>
         <DialogTrigger asChild>
           <Button variant="outline" >{trigger}</Button>

@@ -9,7 +9,7 @@ const Blocks = () => {
     return (
         <>
             {block &&
-                <div className='flex flex-col items-center mt-4'
+                <div className='flex flex-col items-center mt-4 pb-5'
                     style={{
                         gap: styles?.cardSpacing ?? 6,
                         color: styles?.cardTextColor || "white"
