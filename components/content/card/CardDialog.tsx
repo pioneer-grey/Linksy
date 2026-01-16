@@ -14,11 +14,11 @@ import { addBlock } from "@/actions/block"
 import { toast } from "sonner"
 import { Link,MailPlus } from 'lucide-react';
 const CardDialog = () => {
-  const { mutateAsync: addMutate } = addBlock()
+  const { mutateAsync } = addBlock()
   
   const createBlockFunc = async (values: { type: string, title: string, url: string }):Promise<void> => {
     try {
-      const res = addMutate(values)
+      const res = mutateAsync(values)
       toast.promise(res, {
         loading: "Creating block…",
         success: "Block created successfully.",
@@ -49,26 +49,26 @@ const CardDialog = () => {
               <ButtonBlockForm
                 trigger={
                   <div className='flex gap-2 items-center'>
-                    <Link/>
+                    <Button variant={"outline"}>
+                  <Link/>
                     <h1>URL Button</h1>
+                    </Button>
+                    
                   </div> 
                 }
-                dialogTitle="URL Button"
-                inputTitle="URL"
-                inputPlaceholder="https://www.example.com"
                 type="url"
                 onSubmit={createBlockFunc}
               />
               <ButtonBlockForm
                 trigger={
                   <div className='flex gap-2 items-center'>
+                    <Button variant={"outline"}>
                     <MailPlus/>
                     <h1>Email Button</h1>
+                    </Button>
+                    
                   </div> 
                 }
-                dialogTitle="Email Button"
-                inputTitle="Email Address"
-                inputPlaceholder="example@xyz.com"
                 type="email"
                 onSubmit={createBlockFunc}
               />

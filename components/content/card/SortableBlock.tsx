@@ -1,23 +1,41 @@
 import React from 'react'
-import { GripVertical, Trash2, Pencil  } from "lucide-react"
+import { GripVertical, Trash2, Pencil } from "lucide-react"
 import {
   useSortable,
 } from "@dnd-kit/sortable"
+import { updateBlock } from '@/actions/block'
 import { block } from '@/store/types'
 import { CSS } from "@dnd-kit/utilities"
-
+import {toast} from "sonner"
+import ButtonBlockForm from "@/components/content/card/BlockForm/ButtonBlockForm"
 type Props = {
   item: block,
   deleteFunc: (id: string) => Promise<void>
 }
 
 const SortableBlock = ({ item, deleteFunc }: Props) => {
+  const{mutateAsync}=updateBlock()
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: item.id })
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
+  }
+
+    const editBlockFunc = async (values: { id: string, title: string, url: string }):Promise<void> => {
+    try {
+      const res = mutateAsync(values)
+      toast.promise(res, {
+        loading: "Editing block…",
+        success: "Block edited successfully.",
+        error: "Failed to edit block."
+      })
+      await res
+    }
+    catch (err: any) {
+      console.log(err)
+    }
   }
   return (
     <div ref={setNodeRef} style={style}>
@@ -32,20 +50,48 @@ const SortableBlock = ({ item, deleteFunc }: Props) => {
           </div>
           <span>
             <div className='flex gap-1 items-center'>
-              <Pencil
-              className="hover:text-blue-500"
-              size={16}
-              />
+              {(() => {
+                switch (item.type) {
+                  case "url":
+                    return (
+                      <>
+                        <ButtonBlockForm type="url"
+                          trigger={
+                            <Pencil className="hover:text-blue-500" size={16} />
+                          }
+                          onUpdate={editBlockFunc}
+                          id={item.id}
+                          defaultValue={{title:item.title|| "",url:item.url || ""}}
+                        />
+                      </>
+                    )
+                  case "email":
+                    return (
+                      <>
+                       <ButtonBlockForm type="email"
+                          trigger={
+                            <Pencil className="hover:text-blue-500" size={16} />
+                          }
+                          id={item.id}
+                          onUpdate={editBlockFunc}
+                          defaultValue={{title:item.title|| "",url:item.url || ""}}
+                        />
+                      </>
+                    )
+                  default:
+                    return null
+                }
+              })()}
               <Trash2
-              className="hover:text-red-500"
-              size={18}
-              onClick={(e) => {
-                e.stopPropagation()
-                deleteFunc(item.id)
-              }}
-            />
+                className="hover:text-red-500"
+                size={18}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  deleteFunc(item.id)
+                }}
+              />
             </div>
-            
+
           </span>
         </div>
       </div>
