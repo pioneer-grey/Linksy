@@ -3,6 +3,7 @@ import { header } from "@/store/types"
 
 type Header = {
     header: header | null,
+    lastState:"initial"|"newValue",
     setName: (name: string) => void,
     setBio: (bio: string) => void,
     setHeader: (header: header) => void
@@ -10,6 +11,7 @@ type Header = {
 
 export const useHeader = create<Header>()((set) => ({
     header: null,
+    lastState:"initial",
     setHeader: (header) => set({ header }),
     setName: (name) =>
         set((state) => {
@@ -20,6 +22,7 @@ export const useHeader = create<Header>()((set) => ({
                     ...state.header,
                     name,
                 },
+                lastState:"newValue"
             }
         }),
 
@@ -32,6 +35,7 @@ export const useHeader = create<Header>()((set) => ({
                     ...state.header,
                     bio,
                 },
+                lastState:"newValue"
             }
         }),
 }))

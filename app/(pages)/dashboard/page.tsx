@@ -8,10 +8,12 @@ import Styles from "@/components/dashboard/Styles"
 import Content from "@/components/dashboard/Content"
 import { useIconhook } from '@/hooks/useIconhook'
 import { useBlockhook } from '@/hooks/useBlockhook'
+import { useHeaderhook } from '@/hooks/useHeaderhook'
 export default function page() {
   const {data,isLoading}=useDashboard()
   useIconhook()
   useBlockhook()
+  useHeaderhook()
 
 
   if (isLoading) {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {
   Form,
   FormControl,
@@ -12,7 +12,6 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Input } from "@/components/ui/input"
-import { UpdateHeader } from '@/actions/header'
 import { useHeader } from '@/store/useHeader'
 
 export const formSchema = z.object({
@@ -27,7 +26,6 @@ export const formSchema = z.object({
 
 const HeaderForm = () => {
 
-  const { mutateAsync } = UpdateHeader()
   const { header, setBio, setName } = useHeader()
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -37,35 +35,6 @@ const HeaderForm = () => {
       bio: header?.bio || ""
     },
   })
-
-  async function onSubmit(values: { userName:string,name: string; bio: string }) {
-    try {
-      const res = await mutateAsync(values)
-      console.log(res)
-    } catch (err: any) {
-      console.log(err)
-    }
-  }
-useEffect(() => {
-  let timeout: NodeJS.Timeout
-
-  const subscription = form.watch((values) => {
-    clearTimeout(timeout)  
-    timeout = setTimeout(() => {
-      const safeValues = {
-        userName:header?.userName || "",
-        name: values.name || "",
-        bio: values.bio || ""
-      }
-      onSubmit(safeValues)
-    }, 5000)
-  })
-
-  return () => {
-    clearTimeout(timeout)   
-    subscription.unsubscribe()
-  }
-}, [form])
 
   return (
     <Form {...form} >
@@ -94,7 +63,9 @@ useEffect(() => {
             <FormItem>
               <FormLabel>Bio</FormLabel>
               <FormControl>
-                <Textarea placeholder="Bio"  {...field}
+                <Textarea placeholder="Bio"  
+                minLength={15}
+                {...field}
                   onChange={(e) => {
                     field.onChange(e)
                     setBio(e.target.value)
