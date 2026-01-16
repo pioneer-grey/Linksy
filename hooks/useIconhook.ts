@@ -16,8 +16,7 @@ export const useIconhook = () => {
     // On Update State Run useEffect 
     useEffect(() => {
         
-        if (!icon) return
-        if (lastState == "delete" || lastState == "initial") return
+     if (!icon || (lastState !== "reorder" && lastState !== "url")) return
         const submit = async () => {
             try {
                 await mutateAsync(icon)

@@ -20,9 +20,28 @@ const Blocks = () => {
                             case "url":
                                 return (
                                     <ButtonBlock
+                                        type='url'
                                         key={i}
                                         title={item.title}
                                         url={item.url}
+                                    />
+                                )
+                            case "email":
+                                return (
+                                    <ButtonBlock
+                                    type="email"
+                                    key={i}
+                                    title={item.title}
+                                    url={item.url}
+                                    />
+                                )
+                            case "img":
+                                return(
+                                    <ButtonBlock
+                                    type='img'
+                                    key={i}
+                                    title={item.title}
+                                    url={item.url}
                                     />
                                 )
 
