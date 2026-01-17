@@ -3,6 +3,7 @@ import { db } from "@/db/db";
 import { page, social, block, header } from "@/db/schema"
 import { eq } from "drizzle-orm";
 
+
 export async function GET(
     req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
@@ -17,17 +18,25 @@ export async function GET(
                 db.select().from(social).where(eq(social.userName, userName)),
                 db.select().from(block).where(eq(block.userName, userName)),
             ])
+
+        if (pageResult.length == 0) {
+            return NextResponse.json(
+                { error: "Not found" },
+                { status: 404 }
+            )
+        }
+
         return NextResponse.json({
             styles: pageResult[0],
             header: headerResult[0],
-            social: socialResult,
+            icon: socialResult,
             block: blockResult,
         })
 
     }
-    catch (err: any) {
+    catch {
         return NextResponse.json({
-            error: err
-        })
+            message: "Internal Server Error"
+        }, { status: 500 })
     }
 }

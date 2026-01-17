@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const getBio=(userName:string)=>{
       const {data,isLoading,isError} = useQuery({
-        queryKey:["getPage"],
+        queryKey:["getBio"],
         queryFn:async()=>{
             const res=await axios.get(`/api/bio/${userName}`)
             return res.data

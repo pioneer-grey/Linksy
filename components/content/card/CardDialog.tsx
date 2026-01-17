@@ -33,7 +33,6 @@ const CardDialog = () => {
   return (
     <>
       <Dialog>
-        <form>
           <DialogTrigger asChild>
             <Button variant="ghost"><Plus /></Button>
           </DialogTrigger>
@@ -49,7 +48,8 @@ const CardDialog = () => {
               <ButtonBlockForm
                 trigger={
                   <div className='flex gap-2 items-center'>
-                    <Button variant={"outline"}>
+                    <Button variant={"outline"}
+                    type='button'>
                   <Link/>
                     <h1>URL Button</h1>
                     </Button>
@@ -62,7 +62,9 @@ const CardDialog = () => {
               <ButtonBlockForm
                 trigger={
                   <div className='flex gap-2 items-center'>
-                    <Button variant={"outline"}>
+                    <Button variant={"outline"}
+                    type='button'
+                    >
                     <MailPlus/>
                     <h1>Email Button</h1>
                     </Button>
@@ -76,7 +78,6 @@ const CardDialog = () => {
 
             </div>
           </DialogContent>
-        </form>
       </Dialog>
     </>
   )
