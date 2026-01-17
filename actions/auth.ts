@@ -13,7 +13,7 @@ export async function SignupAction(name:string,email:string,password:string){
             name
         }
     })
-    redirect("/dashboard")
+    redirect("/admin/dashboard")
 }
 export async function SigninAction(email:string,password:string){
     await auth.api.signInEmail({
@@ -22,7 +22,7 @@ export async function SigninAction(email:string,password:string){
             password,
         }
     })
-    redirect("/dashboard")
+    redirect("/admin/dashboard")
 }
 
 export async function SignoutAction(){

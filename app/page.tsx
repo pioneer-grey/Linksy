@@ -5,7 +5,7 @@ export default function Page() {
     const route=useRouter()
     return (
         <div>
-            <Button onClick={()=>route.push("/dashboard")}>DashBoard</Button>
+            <Button onClick={()=>route.push("/admin/dashboard")}>DashBoard</Button>
         </div>
     )
 }

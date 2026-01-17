@@ -2,9 +2,11 @@
 import React from 'react'
 import { useParams } from 'next/navigation'
 const page = () => {
-    const {id}=useParams<{id:string}>()
+  const{id}=useParams<{id:string}>()
   return (
-    <div>ID : {id}</div>
+    <>
+    <h1 className='text-center p-2'>{id}</h1>
+    </>
   )
 }
 
