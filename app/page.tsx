@@ -1,11 +1,10 @@
 "use client"
-import { Button } from '@/components/ui/button'
-import { useRouter } from 'next/navigation'
+import Home from "@/components/home/Home"
+
 export default function Page() {
-    const route=useRouter()
     return (
-        <div>
-            <Button onClick={()=>route.push("/admin/dashboard")}>DashBoard</Button>
-        </div>
+        <>
+            <Home />
+        </>
     )
 }

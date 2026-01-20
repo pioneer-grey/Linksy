@@ -8,11 +8,13 @@ import { cn } from "@/lib/utils"
 import { Button } from "./button"
 
 interface AnimatedThemeTogglerProps extends React.ComponentPropsWithoutRef<"button"> {
-  duration?: number
+  duration?: number,
+  varient?:"outline"|"ghost"
 }
 
 export const AnimatedThemeToggler = ({
   className,
+  varient,
   duration = 400,
   ...props
 }: AnimatedThemeTogglerProps) => {
@@ -73,7 +75,7 @@ export const AnimatedThemeToggler = ({
 
   return (
     <Button
-    variant={"outline"}
+    variant={varient}
     size={"icon"}
       ref={buttonRef}
       onClick={toggleTheme}
