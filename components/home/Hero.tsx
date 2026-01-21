@@ -7,8 +7,8 @@ import Image from 'next/image'
 const Hero = () => {
     const router = useRouter()
     const placeholders = [
-        `${process.env.NEXT_PUBLIC_PROJECT_URL}xzo`,
-        `${process.env.NEXT_PUBLIC_PROJECT_URL}adam`,
+        `${process.env.NEXT_PUBLIC_PROJECT_URL}profile`,
+        `${process.env.NEXT_PUBLIC_PROJECT_URL}username`,
         `${process.env.NEXT_PUBLIC_PROJECT_URL}social`,
         `${process.env.NEXT_PUBLIC_PROJECT_URL}link`,
     ];

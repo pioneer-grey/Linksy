@@ -17,7 +17,7 @@ const Styles = () => {
           {process.env.APP_NAME || "Nexly"}
         </h1>
         <div className='flex gap-2'>
-     <AnimatedThemeToggler/>                
+     <AnimatedThemeToggler varient='outline'/>                
           <Userdropdown />
         </div>
       </header>

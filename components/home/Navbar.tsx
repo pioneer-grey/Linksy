@@ -1,4 +1,3 @@
-"use client";
 import {
   Navbar as ResizableNavbar,
   NavBody,
@@ -40,7 +39,7 @@ const Navbar = () => {
           <NavItems items={navItems} />
           <div className="flex items-center gap-2">
             <NavbarButton variant="secondary" ><AnimatedThemeToggler varient="ghost"/></NavbarButton>
-            <NavbarButton variant="primary" onClick={()=>router.push("/signin")}>Sign in</NavbarButton>
+            <NavbarButton variant="primary" onClick={()=>router.push("/admin/dashboard")}>Sign in {"->"}</NavbarButton>
           </div>
         </NavBody>
  
