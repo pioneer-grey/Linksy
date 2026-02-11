@@ -1,6 +1,7 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { IconMenu2, IconX } from "@tabler/icons-react";
+import { Biohazard } from 'lucide-react';
 import {
   motion,
   AnimatePresence,
@@ -236,12 +237,7 @@ export const NavbarLogo = () => {
       href="#"
       className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black"
     >
-      <img
-        src="https://assets.aceternity.com/logo-dark.png"
-        alt="logo"
-        width={30}
-        height={30}
-      />
+       <Biohazard size={18} className="dark:text-white text-black"/>
       <span className="font-medium text-black dark:text-white">Nexly</span>
     </a>
   );
