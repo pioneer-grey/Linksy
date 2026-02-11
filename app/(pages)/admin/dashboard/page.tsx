@@ -6,18 +6,11 @@ import Username from "@/components/dashboard/Username"
 import Display from "@/components/dashboard/Display"
 import Styles from "@/components/dashboard/Styles"
 import Content from "@/components/dashboard/Content"
-import { useIconhook } from '@/hooks/useIconhook'
-import { useBlockhook } from '@/hooks/useBlockhook'
-import { useHeaderhook } from '@/hooks/useHeaderhook'
 import { Button } from '@/components/ui/button'
 
 export default function page() {
   const [toggle, setToggle] = React.useState<boolean>(false)
   const { data, isLoading } = useDashboard()
-
-  useIconhook()
-  useBlockhook()
-  useHeaderhook()
 
 
   if (isLoading) {

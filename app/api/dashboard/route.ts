@@ -57,18 +57,18 @@ export async function GET() {
             title:block.title,
             type:block.type,
             url:block.url,
-            order:social.order,
+            order:block.order,
         }).from(block).where(eq(block.userName, username))
 
         return NextResponse.json({
             success: true,
             styles: styleResult[0],
             header: headerResult[0],
-            social: socialResult[0],
+            icon: socialResult[0],
             block: blockResult[0],
         })
     }
-    catch {
+    catch(err) {
         return NextResponse.json({
             message: "Internal Server Error"
         }, { status: 500 })
