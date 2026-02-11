@@ -1,18 +1,12 @@
-import { getIcons, UpdateIcons } from "@/actions/Icons"
+import { UpdateIcons } from "@/actions/Icons"
 import { useIcon } from "@/store/useIcons"
 import { useEffect } from "react"
 
 
 export const useIconhook = () => {
-    const { data } = getIcons()
     const { mutateAsync } = UpdateIcons()
-    const { setIcon, icon, lastState } = useIcon()
-    useEffect(() => {
-        if (data?.icons) {
-            setIcon(data?.icons)
-        }
-    }, [data])
-
+    const { icon, lastState } = useIcon()
+    
     // On Update State Run useEffect 
     useEffect(() => {
         

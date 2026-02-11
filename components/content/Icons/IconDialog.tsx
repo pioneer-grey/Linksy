@@ -3,7 +3,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
-import { useStyles } from "@/store/useStyles";
 import { MultiSelect } from "@/components/multi-select"
 import { Button } from "@/components/ui/button";
 import {
@@ -26,6 +25,8 @@ import {
 import { Plus } from "lucide-react";
 import { IconsList } from "@/lib/IconsList";
 import { AddIcons } from "@/actions/Icons";
+import { useIconhook } from "@/hooks/useIconhook";
+import { useIcon } from "@/store/useIcons";
 const FormSchema = z.object({
   icons: z
     .array(z.string())
@@ -34,6 +35,7 @@ const FormSchema = z.object({
 
 
 const IconDialog = () => {
+  const{setIcon}=useIcon()
   const [open, setOpen] = React.useState<boolean>(false)
   const { isPending, mutateAsync } = AddIcons()
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -54,7 +56,8 @@ const IconDialog = () => {
         success: "Icons added successfully.",
         error: "Failed to add icons."
       })
-      await res
+      const result=await res
+      setIcon(result.icons)
       setOpen(false)
     }
     catch (err) {

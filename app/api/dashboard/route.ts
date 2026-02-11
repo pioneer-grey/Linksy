@@ -19,7 +19,15 @@ export async function GET() {
 
             }, { status: 401 })
         }
+        if(!session.user.userName){
+            return NextResponse.json({
+                success: false
+            })
+        }
+        
         const userId = session?.user.id as string
+        const username=session.user.userName
+
         const styleResult = await db.select({
             userName: page.userName,
             primaryTextColor: page.primaryTextColor,
@@ -37,12 +45,6 @@ export async function GET() {
             cardSpacing: page.cardSpacing
         }).from(page).where(eq(page.userId, userId))
 
-        if (styleResult.length == 0) {
-            return NextResponse.json({
-                success: false
-            })
-        }
-        const username = styleResult[0].userName
         const headerResult = await db.select().from(header).where(eq(header.userName, username))
        
         const socialResult = await db.select({
@@ -50,7 +52,7 @@ export async function GET() {
             type:social.type,
             url:social.url,
             order:social.order,
-        }).from(social).where(eq(social.userName, username))
+        }).from(social).where(eq(social.userName, username)).orderBy(social.order);
        
         const blockResult = await db.select({
              id:block.id,
@@ -58,14 +60,14 @@ export async function GET() {
             type:block.type,
             url:block.url,
             order:block.order,
-        }).from(block).where(eq(block.userName, username))
+        }).from(block).where(eq(block.userName, username)).orderBy(block.order);
 
         return NextResponse.json({
             success: true,
             styles: styleResult[0],
             header: headerResult[0],
-            icon: socialResult[0],
-            block: blockResult[0],
+            icons: socialResult,
+            blocks: blockResult,
         })
     }
     catch(err) {

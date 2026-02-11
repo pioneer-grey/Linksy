@@ -16,8 +16,8 @@ export const useDashboard=()=>{
     if(data?.success){
       setHeader(data.header)
       setStyles(data.styles)
-      setIcon(data.icon)
-      setBlock(data.block)
+      setIcon(data.icons)
+      setBlock(data.blocks)
       console.log(data)
     }
   },[data])

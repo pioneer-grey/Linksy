@@ -1,59 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db/db";
-import { social, page } from "@/db/schema";
+import { social} from "@/db/schema";
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers";
-import { sql, eq } from "drizzle-orm";
-
-export async function GET() {
-    try {
-        const session = await auth.api.getSession({
-            headers: await headers()
-        })
-        if (!session?.user?.id) return NextResponse.error();
-
-        const userId = session.user.id
-        const userNameresult = await db.select({
-            userName: page.userName
-        }).from(page).where(eq(page.userId, userId))
-
-        const userName = userNameresult[0].userName
-
-        const result = await db.select({
-            id: social.id,
-            url: social.url,
-            type: social.type,
-            order: social.order
-        }).from(social).where(eq(social.userName, userName))
-            .orderBy(social.order)
-
-        return NextResponse.json({
-            success: true,
-            icons: result
-        })
-
-    }
-    catch {
-        return NextResponse.json({
-            message: "Internal Server Error"
-        }, { status: 500 })
-    }
-}
+import { sql, eq, and } from "drizzle-orm";
 
 export async function POST(req: NextRequest) {
     try {
         const session = await auth.api.getSession({
             headers: await headers()
         })
-        if (!session?.user?.id) return NextResponse.error();
+           if (!session?.user.userName) {
+            return NextResponse.json({
+                message: "Unauthorized user",
 
-        const userId = session?.user?.id
+            }, { status: 401 })
+        }
 
-        const userNameresult = await db.select({
-            userName: page.userName
-        }).from(page).where(eq(page.userId, userId))
-
-        const userName = userNameresult[0].userName
+        const userName = session?.user?.userName
 
         const { icons } = await req.json()
 
@@ -65,21 +29,29 @@ export async function POST(req: NextRequest) {
                 .from(social)
                 .where(eq(social.userName, userName))
 
-            icons.forEach(async (s: string, index: number) => {
+             icons.forEach(async (s: string, index: number) => {
                 await tx.insert(social).values({
                     userName,
                     type: s,
                     order: nextOrder + index + 1
                 })
             })
-        }
-        )
+            })
+            
+         const socialResult = await db.select({
+            id:social.id,
+            type:social.type,
+            url:social.url,
+            order:social.order,
+        }).from(social).where(eq(social.userName, userName)).orderBy(social.order);
+       
         return NextResponse.json({
-            success: true
+            icons:socialResult
         })
 
     }
-    catch {
+    catch (err) {
+        console.log(err)
         return NextResponse.json({
             message: "Internal Server Error"
         }, { status: 500 })
@@ -91,11 +63,19 @@ export async function DELETE(req: NextRequest) {
         const session = await auth.api.getSession({
             headers: await headers()
         })
-        if (!session?.user?.id) return NextResponse.error();
+       if (!session?.user.userName) {
+            return NextResponse.json({
+                message: "Unauthorized user",
 
+            }, { status: 401 })
+        }
+
+
+        const userName= session.user.userName
         const { id } = await req.json()
 
-        await db.delete(social).where(eq(social.id, id))
+        await db.delete(social).where(and(eq(social.id, id),eq(social.userName,userName)))
+
         return NextResponse.json({
             success: true,
             message: "Icon Successfully Deleted"
@@ -114,7 +94,15 @@ export async function PUT(req:NextRequest){
         const session = await auth.api.getSession({
             headers: await headers()
         })
-        if (!session?.user?.id) return NextResponse.error();
+        if (!session?.user.userName) {
+            return NextResponse.json({
+                message: "Unauthorized user",
+
+            }, { status: 401 })
+        }
+
+
+        const userName=session.user.userName
 
         const {icons}=await req.json()
 
@@ -123,7 +111,7 @@ export async function PUT(req:NextRequest){
                 url:i.url,
                 order:i.order
             })
-            .where(eq(social.id,i.id))
+            .where(and(eq(social.id,i.id),eq(social.userName,userName)))
         }
 
         return NextResponse.json({
