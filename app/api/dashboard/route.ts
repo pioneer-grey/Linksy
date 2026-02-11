@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { db } from "@/db/db";
-import { page, header } from "@/db/schema"
+import { page, header, social, block } from "@/db/schema"
 import { eq } from "drizzle-orm";
 
 
@@ -12,6 +12,13 @@ export async function GET() {
         const session = await auth.api.getSession({
             headers: await headers()
         })
+
+        if (!session) {
+            return NextResponse.json({
+                message: "Unauthorized user",
+
+            }, { status: 401 })
+        }
         const userId = session?.user.id as string
         const styleResult = await db.select({
             userName: page.userName,
@@ -29,7 +36,7 @@ export async function GET() {
             cardShadow: page.cardShadow,
             cardSpacing: page.cardSpacing
         }).from(page).where(eq(page.userId, userId))
-        
+
         if (styleResult.length == 0) {
             return NextResponse.json({
                 success: false
@@ -37,10 +44,28 @@ export async function GET() {
         }
         const username = styleResult[0].userName
         const headerResult = await db.select().from(header).where(eq(header.userName, username))
+       
+        const socialResult = await db.select({
+            id:social.id,
+            type:social.type,
+            url:social.url,
+            order:social.order,
+        }).from(social).where(eq(social.userName, username))
+       
+        const blockResult = await db.select({
+             id:block.id,
+            title:block.title,
+            type:block.type,
+            url:block.url,
+            order:social.order,
+        }).from(block).where(eq(block.userName, username))
+
         return NextResponse.json({
             success: true,
             styles: styleResult[0],
-            header: headerResult[0]
+            header: headerResult[0],
+            social: socialResult[0],
+            block: blockResult[0],
         })
     }
     catch {

@@ -4,6 +4,7 @@ import { pgTable, text, timestamp, boolean, index, integer, uniqueIndex, uuid } 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
+  userName:text("userName"),
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").default(false).notNull(),
   image: text("image"),
