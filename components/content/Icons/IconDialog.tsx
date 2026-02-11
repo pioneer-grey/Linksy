@@ -25,7 +25,6 @@ import {
 import { Plus } from "lucide-react";
 import { IconsList } from "@/lib/IconsList";
 import { AddIcons } from "@/actions/Icons";
-import { useIconhook } from "@/hooks/useIconhook";
 import { useIcon } from "@/store/useIcons";
 const FormSchema = z.object({
   icons: z

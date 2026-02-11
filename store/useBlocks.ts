@@ -4,6 +4,7 @@ import { block } from "./types"
 type Block = {
     block: block[] | null,
     setBlock: (block: block[]) => void,
+    setOneBlock:(block:block)=>void,
     lastState: "delete" | "initial" | "reorder",
     deleteBlock: (id: string) => void,
     reorderBlocks: (activeId: string, overId: string) => void,
@@ -14,6 +15,11 @@ export const useBlock = create<Block>()((set) => ({
     block: null,
     lastState: "initial",
     setBlock: (block) => set({ block }),
+    
+    setOneBlock:(block)=>set((state)=>{
+         return ({block:[...(state.block || []),block]})
+        }),
+
     reorderBlocks: (activeId, overId) =>
         set((state) => {
             if (!state.block || activeId === overId) return state

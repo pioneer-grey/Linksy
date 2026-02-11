@@ -13,8 +13,11 @@ import ButtonBlockForm from './BlockForm/ButtonBlockForm'
 import { addBlock } from "@/actions/block"
 import { toast } from "sonner"
 import { Link,MailPlus } from 'lucide-react';
+import { useBlock } from '@/store/useBlocks'
+
 const CardDialog = () => {
   const { mutateAsync } = addBlock()
+  const{setOneBlock}=useBlock()
   
   const createBlockFunc = async (values: { type: string, title: string, url: string }):Promise<void> => {
     try {
@@ -24,7 +27,8 @@ const CardDialog = () => {
         success: "Block created successfully.",
         error: "Failed to create block."
       })
-      await res
+      const result=await res
+        setOneBlock(result.block)
     }
     catch (err: any) {
       console.log(err)

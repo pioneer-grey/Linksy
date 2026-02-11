@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
@@ -21,8 +22,10 @@ import IconsForm from '../content/Icons/IconsForm';
 import { useHeader } from '@/store/useHeader';
 import CardForm from '../content/card/CardForm';
 import { useRouter } from 'next/navigation';
+import { useIconhook } from "@/hooks/useIconhook";
 
 const Content = () => {
+    useIconhook()
     const router =useRouter()
     const { header } = useHeader()
     if (!header) return null
