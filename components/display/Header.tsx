@@ -38,9 +38,9 @@ const Header = () => {
                         <AvatarImage
                             className='object-cover'
                             src={header?.picURL || "https://github.com/maxleiter.png"}
-                            alt={header?.userName}
+                            alt={styles?.userName}
                         />
-                        <AvatarFallback>{header?.userName?.slice(0, 2).toUpperCase() ?? "LR"}</AvatarFallback>
+                        <AvatarFallback>{styles?.userName?.slice(0, 2).toUpperCase() ?? "LR"}</AvatarFallback>
                     </Avatar>
                 </div>
                 <p className='text-sm max-w-[70%] font-medium leading-none tracking-tight pb-2'>{header?.name}</p>

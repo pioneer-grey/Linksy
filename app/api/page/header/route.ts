@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { db } from "@/db/db";
-import { header, page } from "@/db/schema"
+import { header} from "@/db/schema"
 import { eq } from "drizzle-orm";
 
 export async function PUT(req:NextRequest){
@@ -10,18 +10,30 @@ export async function PUT(req:NextRequest){
             const session = await auth.api.getSession({
                 headers: await headers()
             })
-            if (!session?.user?.id) return NextResponse.error();
-    
-            const {name,bio,userName}=await req.json()
-            if (!userName) return NextResponse.json({ error: "User not found" }, { status: 404 });
-            await db
+            if (!session?.user?.userName) {
+                return NextResponse.json({
+                message: "Unauthorized user",
+
+            }, { status: 401 })
+            }
+
+            const userName=session.user.userName
+
+            const {name,bio}=await req.json()
+            
+            const resultHeader=await db
                 .update(header)
                 .set({ name:name,
                     bio:bio
                  })
-                .where(eq(header.userName, userName));
+                .where(eq(header.userName, userName)).returning({
+                    name:header.name,
+                    bio:header.bio
+                });
     
-            return NextResponse.json({ success: true,});
+            return NextResponse.json({
+                header:resultHeader[0]
+            });
         }
         catch {
             return NextResponse.json({

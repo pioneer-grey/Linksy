@@ -5,6 +5,7 @@ type Header = {
     header: header | null,
     lastState:"initial"|"newValue",
     setName: (name: string) => void,
+    setPicUrl: (url: string) => void,
     setBio: (bio: string) => void,
     setHeader: (header: header) => void
 }
@@ -13,6 +14,17 @@ export const useHeader = create<Header>()((set) => ({
     header: null,
     lastState:"initial",
     setHeader: (header) => set({ header }),
+    
+    setPicUrl:(url)=> set((state)=>{
+        if(!state.header) return state
+        return {
+            header:{
+                ...state.header,
+                picURL:url
+            }
+        }
+    }),
+
     setName: (name) =>
         set((state) => {
             if (!state.header) return state

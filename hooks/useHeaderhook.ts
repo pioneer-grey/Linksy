@@ -6,10 +6,9 @@ export const useHeaderhook=()=>{
     const{header,lastState}=useHeader()
     const{mutateAsync}=UpdateHeader()
 
-     async function onSubmit(values: { userName:string,name: string; bio: string }) {
+     async function onSubmit(values: {name: string; bio: string }) {
         try {
           const res = await mutateAsync(values)
-          console.log(res)
         } catch (err: any) {
           console.log(err)
         }
@@ -20,7 +19,6 @@ export const useHeaderhook=()=>{
       let timeout: NodeJS.Timeout  
         timeout = setTimeout(() => {
           const safeValues = {
-            userName:header?.userName || "",
             name: header?.name || "",
             bio: header?.bio || ""
           }

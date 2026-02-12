@@ -18,7 +18,6 @@ export type styles= {
 
 
   export type header= {
-    userName: string;
     name: string | null;
     bio: string | null;
     picURL: string | null;

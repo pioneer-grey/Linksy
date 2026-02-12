@@ -1,9 +1,8 @@
-import { useQueryClient, useMutation } from "@tanstack/react-query"
+import {useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { toast } from "sonner"
 
 export function UploadAvatar(){
-  const queryClient = useQueryClient();
 
   const {mutateAsync,isPending}= useMutation({
     mutationFn: async (file: File) => {
@@ -15,9 +14,7 @@ export function UploadAvatar(){
       const res = await axios.put("/api/page/profile",formData)
       return res.data
     },
-    // onSuccess:()=>{
-    //      queryClient.invalidateQueries({ queryKey: ['getPage'] });
-    // },
+
      onError: (error: any) => {
     if (axios.isAxiosError(error)) {
       toast.error(
@@ -34,16 +31,12 @@ export function UploadAvatar(){
 
 
 export function UpdateHeader(){
-  const queryClient = useQueryClient();
 
   const {mutateAsync,isPending}= useMutation({
-    mutationFn: async (values:{userName:string,name:string,bio:string}) => {
+    mutationFn: async (values:{name:string,bio:string}) => {
       const res = await axios.put("/api/page/header",values)
       return res.data
     },
-    // onSuccess:()=>{
-    //      queryClient.invalidateQueries({ queryKey: ['getPage'] });
-    // },
      onError: (error: any) => {
     if (axios.isAxiosError(error)) {
       toast.error(

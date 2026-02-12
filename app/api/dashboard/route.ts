@@ -45,7 +45,11 @@ export async function GET() {
             cardSpacing: page.cardSpacing
         }).from(page).where(eq(page.userId, userId))
 
-        const headerResult = await db.select().from(header).where(eq(header.userName, username))
+        const headerResult = await db.select({
+            name:header.name,
+            bio:header.bio,
+            picURL:header.picURL
+        }).from(header).where(eq(header.userName, username))
        
         const socialResult = await db.select({
             id:social.id,
