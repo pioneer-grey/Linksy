@@ -35,6 +35,7 @@ export type styles= {
       id:string,
       title:string | null,
       url:string | null,
+      imgURL:string | null,
       type:string,
       order:number
   }

@@ -12,7 +12,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useEffect, useState } from "react"
-import UploadImg from "../../Profile/UploadImg"
 import { useFileUpload } from "@/hooks/use-file-upload"
 
 type Props = {

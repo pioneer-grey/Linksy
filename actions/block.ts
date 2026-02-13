@@ -18,7 +18,7 @@ export const addBlock=()=>{
     const queryClient = useQueryClient();
     const{mutateAsync,isPending}=useMutation({
         mutationFn:async(values:{type:string,title:string|null,url:string|null})=>{
-            const res=await axios.post("/api/page/block",values)
+            const res=await axios.post("/api/page/block/button",values)
             return res.data
         },
 
@@ -66,7 +66,7 @@ export const updateBlock=()=>{
     const queryClient = useQueryClient();
     const{mutateAsync,isPending}=useMutation({
         mutationFn:async(values:{id:string,title:string,url:string})=>{
-            const res=await axios.put("/api/page/block",values)
+            const res=await axios.put("/api/page/block/button",values)
             return res.data
         },
 
