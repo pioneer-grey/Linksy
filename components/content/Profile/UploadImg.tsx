@@ -4,9 +4,12 @@ import { CircleUserRoundIcon,Upload } from "lucide-react";
 import { useFileUpload } from "@/hooks/use-file-upload";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner" 
+import { UploadAvatar } from "@/actions/header";
+import { useHeader } from '@/store/useHeader';
 
-export default function UploadImg({onSubmit,isPending}:{onSubmit:(file:File)=>Promise<void>,isPending:boolean}) {
-
+export default function UploadImg() {
+  const { mutateAsync, isPending } = UploadAvatar()
+  const {setPicUrl}=useHeader()
   const [{ files }, { removeFile, openFileDialog, getInputProps }] =
     useFileUpload({
       accept: "image/*",
@@ -20,6 +23,7 @@ export default function UploadImg({onSubmit,isPending}:{onSubmit:(file:File)=>Pr
     removeFile(files[0]?.id);
   };
 
+  
 const submit = async () => {
   if (!file || !(file instanceof File)) {
     toast.error("Invalid file selected");
@@ -27,7 +31,16 @@ const submit = async () => {
   }
 
   try {
-   await onSubmit(file)
+    const res = mutateAsync(file);
+            toast.promise(res, {
+                loading: "Uploading image...",
+                success: "Image uploaded successfully",
+                error: (err) => err.message || "Upload failed",
+            });
+
+            const result = await res;
+
+            setPicUrl(result.picURL);
     handleRemoveFile();
 
   } catch (err) {

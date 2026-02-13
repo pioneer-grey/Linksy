@@ -139,6 +139,7 @@ export const block =pgTable("block",{
   userName:text("userName").notNull().references(()=>page.userName),
   title:text("title"),
   url:text("url"),
+  imgURL:text("img_url"),
   type:text("type"),
   order:integer("order").notNull(),
   createdAt:timestamp("createdAt").defaultNow()

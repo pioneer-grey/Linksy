@@ -43,6 +43,13 @@
       "when": 1770822485143,
       "tag": "0005_windy_toro",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1770994578056,
+      "tag": "0006_yellow_betty_ross",
+      "breakpoints": true
     }
   ]
 }

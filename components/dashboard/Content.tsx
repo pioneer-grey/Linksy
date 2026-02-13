@@ -21,8 +21,6 @@ import HeaderForm from '../content/Header/HeaderForm';
 import IconsForm from '../content/Icons/IconsForm';
 import { useHeader } from '@/store/useHeader';
 import CardForm from '../content/card/CardForm';
-import { toast } from "sonner";
-import { UploadAvatar } from "@/actions/header";
 import { useIconhook } from "@/hooks/useIconhook";
 import { useHeaderhook } from '@/hooks/useHeaderhook'
 
@@ -31,28 +29,10 @@ const Content = () => {
     useIconhook()
     useHeaderhook()
 
-    const { header, setPicUrl } = useHeader()
+    const { header} = useHeader()
     if (!header) return null
 
-    const { mutateAsync, isPending } = UploadAvatar()
 
-    const submitImg = async (file: File) => {
-        try {
-            const res = mutateAsync(file);
-            toast.promise(res, {
-                loading: "Uploading image...",
-                success: "Image uploaded successfully",
-                error: (err) => err.message || "Upload failed",
-            });
-
-            const result = await res;
-
-            setPicUrl(result.picURL);
-
-        } catch (err) {
-            console.error("Upload failed:", err);
-        }
-    }
 
     return (
         <>
@@ -87,10 +67,7 @@ const Content = () => {
                                 </Tooltip>
                                 Profile</AccordionTrigger>
                             <AccordionContent className='h-auto'>
-                                <UploadImg
-                                    onSubmit={submitImg}
-                                    isPending={isPending}
-                                />
+                                <UploadImg/>
                             </AccordionContent>
                         </AccordionItem>
 
