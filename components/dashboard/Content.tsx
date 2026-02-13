@@ -21,16 +21,18 @@ import HeaderForm from '../content/Header/HeaderForm';
 import IconsForm from '../content/Icons/IconsForm';
 import { useHeader } from '@/store/useHeader';
 import CardForm from '../content/card/CardForm';
-import { useRouter } from 'next/navigation';
+
 import { useIconhook } from "@/hooks/useIconhook";
 import { useHeaderhook } from '@/hooks/useHeaderhook'
+
+
 const Content = () => {
     useIconhook()
     useHeaderhook()    
 
-    const router =useRouter()
     const { header } = useHeader()
     if (!header) return null
+    
 
     return (
         <>
@@ -39,9 +41,9 @@ const Content = () => {
                     <ButtonGroup>
                         <Input readOnly defaultValue={process.env.NEXT_PUBLIC_PROJECT_URL + (header?.userName || "")} />
                         <Button
-                            onClick={()=>router.push("/"+(header?.userName|| ""))}
-                            variant="default" aria-label="visit">
-                            <IconExternalLink />
+                        onClick={()=>window.open("/"+(header.userName),"_blank")}
+                            variant="default" aria-label="view">  
+                                  <IconExternalLink />
                         </Button>
                     </ButtonGroup>
                 </header>
