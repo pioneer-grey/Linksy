@@ -5,57 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1768301751036,
-      "tag": "0000_quiet_chamber",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1768412693745,
-      "tag": "0001_wide_dust",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1768474743935,
-      "tag": "0002_violet_hawkeye",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1768474777718,
-      "tag": "0003_lazy_prima",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1768478911858,
-      "tag": "0004_plain_layla_miller",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1770822485143,
-      "tag": "0005_windy_toro",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1770994578056,
-      "tag": "0006_yellow_betty_ross",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1771003166233,
-      "tag": "0007_curly_lady_vermin",
+      "when": 1771005725824,
+      "tag": "0000_mute_mimic",
       "breakpoints": true
     }
   ]

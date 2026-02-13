@@ -1,1 +1,0 @@
-ALTER TABLE "block" ADD COLUMN "type" text;

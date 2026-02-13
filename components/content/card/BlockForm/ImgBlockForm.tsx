@@ -13,18 +13,20 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useEffect, useState } from "react"
 import { useFileUpload } from "@/hooks/use-file-upload"
+import { useBlock } from "@/store/useBlocks"
+import { addImgBlock } from "@/actions/block"
+import { toast } from "sonner"
 
 type Props = {
   id?: string,
   trigger: React.ReactNode,
   defaultValue?: {
     title: string,
-    url: string
+    url: string,
+    imgURL:string
   },
-  onSubmit?: (values: { title: string, url: string }) => Promise<void>,
-  onUpdate?: (values: { id: string, title: string, url: string }) => Promise<void>,
 }
-const ImgBlockForm = ({ id, defaultValue, onSubmit, onUpdate, trigger }: Props) => {
+const ImgBlockForm = ({ id, defaultValue,trigger }: Props) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [open, setOpen] = useState<boolean>(false)
   const [title, setTitle] = useState<string>("")
@@ -36,18 +38,64 @@ const ImgBlockForm = ({ id, defaultValue, onSubmit, onUpdate, trigger }: Props) 
       accept: "image/*",
     });
 
-  const previewUrl = files[0]?.preview || null;
+  let previewUrl = files[0]?.preview || null;
   const fileName = files[0]?.file.name || null;
   const file = files[0]?.file || null;
 
+   const {mutateAsync}=addImgBlock()
+   const{setOneBlock}=useBlock()
+  
+  const createBlockFunc = async (values:FormData):Promise<void> => {
+    try {
+      const res = mutateAsync(values)
+      toast.promise(res, {
+        loading: "Creating block…",
+        success: "Block created successfully.",
+      })
+      const result=await res
+        setOneBlock(result.block)
+    }
+    catch (err: any) {
+      console.log(err)
+    }
+  }
+
+  const editBlockFunc = async (values:FormData):Promise<void> => {
+    // try {
+    //   const res = updateAsync(values)
+    //   toast.promise(res, {
+    //     loading: "Editing block…",
+    //     success: "Block edited successfully.",
+    //     error: "Failed to edit block."
+    //   })
+    //   const result=await res
+    //   setOneBlock(result.block,true)
+    // }
+    // catch (err: any) {
+    //   console.log(err)
+    // }
+  }
+
+
   const submit = async () => {
+
+     if (!file || !(file instanceof File)) {
+        toast.error("Image is not selected");
+        return;
+      }
+    
     try {
       setLoading(true)
-      await onSubmit?.({ title, url })
 
-      if (id) {
-        await onUpdate?.({ id, title, url })
-      }
+      const form=new FormData()
+      form.append("img",file)
+      form.append("title",title)
+      form.append("url",url)
+
+      // id ?  await editBlockFunc():  
+       await createBlockFunc(form)
+
+
       setOpen(false)
     } catch (err) {
       console.log(err)
@@ -61,6 +109,8 @@ const ImgBlockForm = ({ id, defaultValue, onSubmit, onUpdate, trigger }: Props) 
     if (defaultValue) {
       setTitle(defaultValue.title)
       setUrl(defaultValue.url)
+      previewUrl=defaultValue.imgURL
+
     }
   }, [])
 
@@ -116,8 +166,8 @@ const ImgBlockForm = ({ id, defaultValue, onSubmit, onUpdate, trigger }: Props) 
 
                 </div>
               </div>
-              {fileName && (
-                <div className="inline-flex gap-2 text-xs">
+              {previewUrl && (
+                <div className="inline-flex gap-2">
                   <img 
                   className="rounded-lg"
                   src={previewUrl || ""} alt="img" />

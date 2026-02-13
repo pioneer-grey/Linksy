@@ -6,6 +6,7 @@ import {
 import { block } from '@/store/types'
 import { CSS } from "@dnd-kit/utilities"
 import ButtonBlockForm from "@/components/content/card/BlockForm/ButtonBlockForm"
+import ImgBlockForm from './BlockForm/ImgBlockForm'
 
 type Props = {
   item: block,
@@ -59,6 +60,18 @@ const SortableBlock = ({ item, deleteFunc }: Props) => {
                           }
                           id={item.id}
                           defaultValue={{title:item.title|| "",url:item.url || ""}}
+                        />
+                      </>
+                    )
+                    case "img":
+                    return (
+                      <>
+                       <ImgBlockForm
+                          trigger={
+                            <Pencil className="hover:text-blue-500" size={16} />
+                          }
+                          id={item.id}
+                          defaultValue={{title:item.title|| "",url:item.url || "", imgURL:item.imgURL || ""}}
                         />
                       </>
                     )

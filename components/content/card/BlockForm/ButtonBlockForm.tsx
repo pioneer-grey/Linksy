@@ -56,7 +56,6 @@ const ButtonBlockForm = ({type,trigger,defaultValue,id}:props) => {
       toast.promise(res, {
         loading: "Creating block…",
         success: "Block created successfully.",
-        error: "Failed to create block."
       })
       const result=await res
         setOneBlock(result.block)
@@ -85,7 +84,7 @@ const ButtonBlockForm = ({type,trigger,defaultValue,id}:props) => {
   const submit=async()=>{
     try{
       setLoading(true)
-      id ?  await editBlockFunc?.({id,title,url})
+      id ?  await editBlockFunc({id,title,url})
          :   await createBlockFunc({type,title,url})
 
       setOpen(false)

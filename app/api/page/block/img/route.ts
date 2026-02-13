@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
 
         if(!img){
             return NextResponse.json({
-                message:"File is missing "
+                message:"Image is missing "
             },{status:401})
         }
 

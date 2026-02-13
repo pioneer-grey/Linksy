@@ -94,8 +94,8 @@ export const accountRelations = relations(account, ({ one }) => ({
 }));
 
 export const page = pgTable("page", {
-  userName: text("user_name").unique().notNull().primaryKey(),
-  userId: text("user_id").notNull().references(() => user.id),
+  userName: text("userName").unique().notNull().primaryKey(),
+  userId: text("userId").notNull().references(() => user.id),
 
   primaryTextColor: text("primary_text_color"),
   primaryBackground: text("primary_background"),
@@ -119,7 +119,7 @@ export const page = pgTable("page", {
 }))
 
 export const header = pgTable("header", {
-  userName: text("user_name").notNull().references(() => page.userName).primaryKey(),
+  userName: text("userName").notNull().references(() => page.userName).primaryKey(),
   name: text("name").default("@username"),
   bio: text("bio"),
   picURL: text("picURL")
@@ -129,7 +129,7 @@ export const header = pgTable("header", {
 
 export const social = pgTable("social",{
     id: uuid("id").defaultRandom().primaryKey(),
-    userName: text("user_name")
+    userName: text("userName")
       .notNull()
       .references(() => page.userName,{onDelete:"cascade"}),
     type: text("type").notNull(),
@@ -142,7 +142,7 @@ export const social = pgTable("social",{
 
 export const block =pgTable("block",{
   id:uuid("id").defaultRandom().primaryKey(),
-  userName:text("user_name").notNull().references(()=>page.userName,{onDelete:"cascade"}),
+  userName:text("userName").notNull().references(()=>page.userName,{onDelete:"cascade"}),
   title:text("title"),
   url:text("url"),
   imgURL:text("img_url"),

@@ -1,5 +1,5 @@
 {
-  "id": "e836b8ef-625e-41b4-b077-81faddf4edc4",
+  "id": "16cc0855-6862-40b7-879e-55c7bb416a49",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -126,6 +126,99 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.block": {
+      "name": "block",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "userName": {
+          "name": "userName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "img_url": {
+          "name": "img_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "block_user_name_index": {
+          "name": "block_user_name_index",
+          "columns": [
+            {
+              "expression": "userName",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "block_userName_page_userName_fk": {
+          "name": "block_userName_page_userName_fk",
+          "tableFrom": "block",
+          "tableTo": "page",
+          "columnsFrom": [
+            "userName"
+          ],
+          "columnsTo": [
+            "userName"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.header": {
       "name": "header",
       "schema": "",
@@ -156,7 +249,23 @@
           "notNull": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "header_user_name_idx": {
+          "name": "header_user_name_idx",
+          "columns": [
+            {
+              "expression": "userName",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {
         "header_userName_page_userName_fk": {
           "name": "header_userName_page_userName_fk",
@@ -280,7 +389,23 @@
           "default": "now()"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "page_user_id_idx": {
+          "name": "page_user_id_idx",
+          "columns": [
+            {
+              "expression": "userId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {
         "page_userId_user_id_fk": {
           "name": "page_userId_user_id_fk",
@@ -421,8 +546,8 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "user_name": {
-          "name": "user_name",
+        "userName": {
+          "name": "userName",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -454,40 +579,34 @@
         }
       },
       "indexes": {
-        "user_order_unique": {
-          "name": "user_order_unique",
+        "social_user_name_idx": {
+          "name": "social_user_name_idx",
           "columns": [
             {
-              "expression": "user_name",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "order",
+              "expression": "userName",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
             }
           ],
-          "isUnique": true,
+          "isUnique": false,
           "concurrently": false,
           "method": "btree",
           "with": {}
         }
       },
       "foreignKeys": {
-        "social_user_name_page_userName_fk": {
-          "name": "social_user_name_page_userName_fk",
+        "social_userName_page_userName_fk": {
+          "name": "social_userName_page_userName_fk",
           "tableFrom": "social",
           "tableTo": "page",
           "columnsFrom": [
-            "user_name"
+            "userName"
           ],
           "columnsTo": [
             "userName"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -512,6 +631,12 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "userName": {
+          "name": "userName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "email": {
           "name": "email",
