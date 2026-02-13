@@ -94,8 +94,8 @@ export const accountRelations = relations(account, ({ one }) => ({
 }));
 
 export const page = pgTable("page", {
-  userName: text("userName").unique().notNull().primaryKey(),
-  userId: text("userId").notNull().references(() => user.id),
+  userName: text("user_name").unique().notNull().primaryKey(),
+  userId: text("user_id").notNull().references(() => user.id),
 
   primaryTextColor: text("primary_text_color"),
   primaryBackground: text("primary_background"),
@@ -114,29 +114,35 @@ export const page = pgTable("page", {
   cardSpacing: integer("card_spacing"),
 
   createdAt: timestamp("createdAt").defaultNow()
-})
+},(table)=>({
+  userIdIdx:index("page_user_id_idx").on(table.userId)
+}))
 
 export const header = pgTable("header", {
-  userName: text("userName").notNull().references(() => page.userName).primaryKey(),
+  userName: text("user_name").notNull().references(() => page.userName).primaryKey(),
   name: text("name").default("@username"),
   bio: text("bio"),
   picURL: text("picURL")
-})
+},(table)=>({
+  userNameIdx:index("header_user_name_idx").on(table.userName)
+}))
 
 export const social = pgTable("social",{
     id: uuid("id").defaultRandom().primaryKey(),
     userName: text("user_name")
       .notNull()
-      .references(() => page.userName),
+      .references(() => page.userName,{onDelete:"cascade"}),
     type: text("type").notNull(),
     url: text("url"),
     order: integer("order").notNull(),
     createdAt: timestamp("created_at").defaultNow(),
-  });
+  },(table)=>({
+    userNameIdx:index("social_user_name_idx").on(table.userName)
+  }));
 
 export const block =pgTable("block",{
   id:uuid("id").defaultRandom().primaryKey(),
-  userName:text("userName").notNull().references(()=>page.userName),
+  userName:text("user_name").notNull().references(()=>page.userName,{onDelete:"cascade"}),
   title:text("title"),
   url:text("url"),
   imgURL:text("img_url"),
@@ -144,4 +150,7 @@ export const block =pgTable("block",{
   order:integer("order").notNull(),
   createdAt:timestamp("createdAt").defaultNow()
 
+},(table)=>({
+  userNameIdx:index("block_user_name_index").on(table.userName)
 })
+)

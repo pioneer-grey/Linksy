@@ -50,6 +50,13 @@
       "when": 1770994578056,
       "tag": "0006_yellow_betty_ross",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1771003166233,
+      "tag": "0007_curly_lady_vermin",
+      "breakpoints": true
     }
   ]
 }

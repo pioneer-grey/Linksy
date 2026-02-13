@@ -12,17 +12,18 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useEffect, useState } from "react"
+import {toast} from "sonner"
+import { addButtonBlock, updateButtonBlock } from "@/actions/block"
+import { useBlock } from "@/store/useBlocks"
 
 type props={
   id?:string,
   type:"url"|"email",
   defaultValue?:{
     title:string,
-    url:string
+    url:string,
   },
   trigger:React.ReactNode,
-  onSubmit?:(values:{type: string, title: string, url: string })=>Promise<void>,
-  onUpdate?:(values:{id:string,title:string,url:string})=>Promise<void>,
 }
 const info={
   url:{
@@ -38,20 +39,55 @@ const info={
     inputType:"email"
   }
 }
-const ButtonBlockForm = ({type,trigger,onSubmit,onUpdate,defaultValue,id}:props) => {
+const ButtonBlockForm = ({type,trigger,defaultValue,id}:props) => {
   const[loading,setLoading] =useState<boolean>(false)
   const[open,setOpen] =useState<boolean>(false)
   const [title,setTitle]=useState<string>("")
   const [url,setUrl]=useState<string>("")
   
+  const { mutateAsync } = addButtonBlock()
+  const{mutateAsync:updateAsync}=updateButtonBlock()
+
+  const{setOneBlock}=useBlock()
+  
+  const createBlockFunc = async (values: { type: string, title: string, url: string }):Promise<void> => {
+    try {
+      const res = mutateAsync(values)
+      toast.promise(res, {
+        loading: "Creating block…",
+        success: "Block created successfully.",
+        error: "Failed to create block."
+      })
+      const result=await res
+        setOneBlock(result.block)
+    }
+    catch (err: any) {
+      console.log(err)
+    }
+  }
+
+  const editBlockFunc = async (values: { id: string, title: string, url: string }):Promise<void> => {
+    try {
+      const res = updateAsync(values)
+      toast.promise(res, {
+        loading: "Editing block…",
+        success: "Block edited successfully.",
+        error: "Failed to edit block."
+      })
+      const result=await res
+      setOneBlock(result.block,true)
+    }
+    catch (err: any) {
+      console.log(err)
+    }
+  }
+
   const submit=async()=>{
     try{
       setLoading(true)
-       await onSubmit?.({type,title,url})
+      id ?  await editBlockFunc?.({id,title,url})
+         :   await createBlockFunc({type,title,url})
 
-       if(id){
-        await onUpdate?.({id,title,url})
-       }
       setOpen(false)
     }catch(err){
       console.log(err)

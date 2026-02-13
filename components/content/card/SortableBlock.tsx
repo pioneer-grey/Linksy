@@ -3,21 +3,17 @@ import { GripVertical, Trash2, Pencil } from "lucide-react"
 import {
   useSortable,
 } from "@dnd-kit/sortable"
-import { updateButtonBlock } from '@/actions/block'
 import { block } from '@/store/types'
 import { CSS } from "@dnd-kit/utilities"
-import {toast} from "sonner"
 import ButtonBlockForm from "@/components/content/card/BlockForm/ButtonBlockForm"
-import { useBlock } from '@/store/useBlocks'
+
 type Props = {
   item: block,
   deleteFunc: (id: string) => Promise<void>
 }
 
-const SortableBlock = ({ item, deleteFunc }: Props) => {
-  const {setOneBlock}=useBlock()
+const SortableBlock = ({ item, deleteFunc }: Props) => {  
   
-  const{mutateAsync}=updateButtonBlock()
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: item.id })
 
@@ -26,21 +22,7 @@ const SortableBlock = ({ item, deleteFunc }: Props) => {
     transition,
   }
 
-    const editBlockFunc = async (values: { id: string, title: string, url: string }):Promise<void> => {
-    try {
-      const res = mutateAsync(values)
-      toast.promise(res, {
-        loading: "Editing block…",
-        success: "Block edited successfully.",
-        error: "Failed to edit block."
-      })
-      const result=await res
-      setOneBlock(result.block,true)
-    }
-    catch (err: any) {
-      console.log(err)
-    }
-  }
+
   return (
     <div ref={setNodeRef} style={style}>
       <div className="mt-2 flex items-center gap-1">
@@ -63,7 +45,6 @@ const SortableBlock = ({ item, deleteFunc }: Props) => {
                           trigger={
                             <Pencil className="hover:text-blue-500" size={16} />
                           }
-                          onUpdate={editBlockFunc}
                           id={item.id}
                           defaultValue={{title:item.title|| "",url:item.url || ""}}
                         />
@@ -77,7 +58,6 @@ const SortableBlock = ({ item, deleteFunc }: Props) => {
                             <Pencil className="hover:text-blue-500" size={16} />
                           }
                           id={item.id}
-                          onUpdate={editBlockFunc}
                           defaultValue={{title:item.title|| "",url:item.url || ""}}
                         />
                       </>

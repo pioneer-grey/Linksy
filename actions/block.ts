@@ -2,18 +2,13 @@ import {useMutation, useQueryClient  } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "sonner"
 
-
-export const addButtonBlock=()=>{
-    const queryClient = useQueryClient();
+export const reorderBlock=()=>{
     const{mutateAsync,isPending}=useMutation({
-        mutationFn:async(values:{type:string,title:string|null,url:string|null})=>{
-            const res=await axios.post("/api/page/block/button",values)
+        mutationFn:async(blocks:{id:string,order:number}[])=>{
+            const res=await axios.put("/api/page/block",{blocks})
             return res.data
         },
 
-   onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getBlocks'] });
-    },
     onError: (error: any) => {
       if (axios.isAxiosError(error)) {
         toast.error(
@@ -27,7 +22,6 @@ export const addButtonBlock=()=>{
   })
   return { mutateAsync, isPending }
 }
-
 
 export const deleteBlock=()=>{
     const{mutateAsync,isPending}=useMutation({
@@ -51,17 +45,13 @@ export const deleteBlock=()=>{
   return { mutateAsync, isPending }
 }
 
-export const updateButtonBlock=()=>{
-    const queryClient = useQueryClient();
+
+export const addButtonBlock=()=>{
     const{mutateAsync,isPending}=useMutation({
-        mutationFn:async(values:{id:string,title:string,url:string})=>{
-            const res=await axios.put("/api/page/block/button",values)
+        mutationFn:async(values:{type:string,title:string|null,url:string|null})=>{
+            const res=await axios.post("/api/page/block/button",values)
             return res.data
         },
-
-   onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getBlocks'] });
-    },
     onError: (error: any) => {
       if (axios.isAxiosError(error)) {
         toast.error(
@@ -76,13 +66,35 @@ export const updateButtonBlock=()=>{
   return { mutateAsync, isPending }
 }
 
-export const reorderBlock=()=>{
+
+
+export const updateButtonBlock=()=>{
     const{mutateAsync,isPending}=useMutation({
-        mutationFn:async(blocks:{id:string,order:number}[])=>{
-            const res=await axios.put("/api/page/block/order",{blocks})
+        mutationFn:async(values:{id:string,title:string,url:string})=>{
+            const res=await axios.put("/api/page/block/button",values)
             return res.data
         },
+    onError: (error: any) => {
+      if (axios.isAxiosError(error)) {
+        toast.error(
+          error.response?.data?.message ??
+          "Something went wrong. Please try again."
+        )
+      } else {
+        toast.error("Unexpected error occurred")
+      }
+    },
+  })
+  return { mutateAsync, isPending }
+}
 
+export const addImgBlock=()=>{
+
+    const{mutateAsync,isPending}=useMutation({
+        mutationFn:async(values:FormData)=>{
+            const res=await axios.post("/api/page/block/img",values)
+            return res.data
+        },
     onError: (error: any) => {
       if (axios.isAxiosError(error)) {
         toast.error(
