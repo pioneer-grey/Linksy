@@ -4,8 +4,11 @@ import { CircleUserRoundIcon,Upload } from "lucide-react";
 import { UploadAvatar } from "@/actions/header";
 import { useFileUpload } from "@/hooks/use-file-upload";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner"
+import { useHeader } from "@/store/useHeader"; 
 
 export default function UploadImg() {
+  const{setPicUrl}=useHeader()
   const {mutateAsync,isPending}=UploadAvatar()
   const [{ files }, { removeFile, openFileDialog, getInputProps }] =
     useFileUpload({
@@ -20,15 +23,30 @@ export default function UploadImg() {
     removeFile(files[0]?.id);
   };
 
-  const submit=async()=>{
-      try{
-        const res=await mutateAsync(file as File)
-        handleRemoveFile()
-      }
-      catch(err:any){
-        console.log(err)
-      }
-    }
+const submit = async () => {
+  if (!file || !(file instanceof File)) {
+    toast.error("Invalid file selected");
+    return;
+  }
+
+  try {
+    const res = mutateAsync(file);
+  
+    toast.promise(res, {
+      loading: "Uploading image...",
+      success: "Image uploaded successfully",
+      error: (err) => err.message || "Upload failed",
+    });
+
+    const result = await res;
+
+    setPicUrl(result.picURL);
+    handleRemoveFile();
+
+  } catch (err) {
+    console.error("Upload failed:", err);
+  }
+};
   return (
     <div className="flex flex-col items-center gap-2">
       <div className="inline-flex items-center gap-2 align-top">
@@ -51,7 +69,9 @@ export default function UploadImg() {
           )}
         </div>
         <div className="relative inline-block">
-          <Button disabled={isPending} aria-haspopup="dialog" onClick={openFileDialog}
+          <Button
+          type="button"
+          disabled={isPending} aria-haspopup="dialog" onClick={openFileDialog}
           variant={fileName ? "outline" : "default"}
           >
             {fileName ? "Change image" : "Upload image"}
@@ -71,7 +91,11 @@ export default function UploadImg() {
             {fileName}
           </p>{" "}
         </div>
-        <Button disabled={isPending} onClick={submit}><Upload/> Upload</Button>
+        <Button 
+        type="button"
+        disabled={isPending} onClick={(e)=>{
+          e.stopPropagation()
+          submit()}}><Upload/> Upload</Button>
         </>
       )}
     </div>

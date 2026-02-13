@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { db } from "@/db/db";
 import { createClient } from "@supabase/supabase-js";
-import { header, page } from "@/db/schema"
+import { header} from "@/db/schema"
 import { eq } from "drizzle-orm";
 
 const supabase = createClient(
@@ -16,14 +16,15 @@ export async function PUT(req: NextRequest) {
         const session = await auth.api.getSession({
             headers: await headers()
         })
-        if (!session?.user?.id) return NextResponse.error();
 
-        const userId = session?.user.id as string
+       if (!session?.user?.userName) {
+                return NextResponse.json({
+                message: "Unauthorized user",
 
-        const usernameResult = await db.select({ userName: page.userName }).from(page).where(eq(page.userId, userId))
+            }, { status: 401 })
+            }
 
-        if (!usernameResult[0]) return NextResponse.json({ error: "User not found" }, { status: 404 });
-        const username = usernameResult[0].userName;
+        const userName=session.user.userName
 
         const formData = await req.formData()
         const avatar = formData.get("avatar") as File;
@@ -35,7 +36,11 @@ export async function PUT(req: NextRequest) {
                 contentType: "image/jpeg",
             });
 
-        if (avatarError) throw avatarError;
+        if (avatarError) {
+            return NextResponse.json({
+                message:"Faild to upload Profile image",
+            },{status:401})
+        }
 
         const { data: avatarUrlData } = supabase.storage
             .from("profile")
@@ -45,9 +50,9 @@ export async function PUT(req: NextRequest) {
         await db
             .update(header)
             .set({ picURL: avatarUrl })
-            .where(eq(header.userName, username));
+            .where(eq(header.userName, userName));
 
-        return NextResponse.json({ success: true, URL: avatarUrl });
+        return NextResponse.json({picURL: avatarUrl },{status:200});
     }
     catch {
         return NextResponse.json({

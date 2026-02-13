@@ -23,9 +23,11 @@ import { useHeader } from '@/store/useHeader';
 import CardForm from '../content/card/CardForm';
 import { useRouter } from 'next/navigation';
 import { useIconhook } from "@/hooks/useIconhook";
-
+import { useHeaderhook } from '@/hooks/useHeaderhook'
 const Content = () => {
     useIconhook()
+    useHeaderhook()    
+
     const router =useRouter()
     const { header } = useHeader()
     if (!header) return null

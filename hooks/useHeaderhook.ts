@@ -8,14 +8,14 @@ export const useHeaderhook=()=>{
 
      async function onSubmit(values: {name: string; bio: string }) {
         try {
-          const res = await mutateAsync(values)
+           await mutateAsync(values)
         } catch (err: any) {
           console.log(err)
         }
       }
 
     useEffect(() => {
-    if(lastState=="initial") return 
+    if(lastState!="newValue") return 
       let timeout: NodeJS.Timeout  
         timeout = setTimeout(() => {
           const safeValues = {

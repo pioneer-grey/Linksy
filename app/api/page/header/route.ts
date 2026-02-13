@@ -21,19 +21,16 @@ export async function PUT(req:NextRequest){
 
             const {name,bio}=await req.json()
             
-            const resultHeader=await db
+            await db
                 .update(header)
                 .set({ name:name,
                     bio:bio
                  })
-                .where(eq(header.userName, userName)).returning({
-                    name:header.name,
-                    bio:header.bio
-                });
+                .where(eq(header.userName, userName))
     
             return NextResponse.json({
-                header:resultHeader[0]
-            });
+                message:"Header Updated"
+            },{status:200});
         }
         catch {
             return NextResponse.json({

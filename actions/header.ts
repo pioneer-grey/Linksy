@@ -7,24 +7,14 @@ export function UploadAvatar(){
   const {mutateAsync,isPending}= useMutation({
     mutationFn: async (file: File) => {
       
-      if (!file) return;
-
+      if (!file) {
+        throw new Error("No file provided");
+      }
        const formData = new FormData();
        formData.append('avatar', file);
       const res = await axios.put("/api/page/profile",formData)
       return res.data
     },
-
-     onError: (error: any) => {
-    if (axios.isAxiosError(error)) {
-      toast.error(
-        error.response?.data?.message ??
-        "Something went wrong. Please try again."
-      )
-    } else {
-      toast.error("Unexpected error occurred")
-    }
-  },
 })
   return {mutateAsync,isPending}
 }

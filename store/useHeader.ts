@@ -3,7 +3,7 @@ import { header } from "@/store/types"
 
 type Header = {
     header: header | null,
-    lastState:"initial"|"newValue",
+    lastState:"initial"|"newValue"|"url",
     setName: (name: string) => void,
     setPicUrl: (url: string) => void,
     setBio: (bio: string) => void,
@@ -21,7 +21,8 @@ export const useHeader = create<Header>()((set) => ({
             header:{
                 ...state.header,
                 picURL:url
-            }
+            },
+            lastState:"url"
         }
     }),
 
