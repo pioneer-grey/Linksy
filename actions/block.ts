@@ -1,20 +1,9 @@
-import { block } from "@/store/types";
-import { useQuery,useMutation, useQueryClient  } from "@tanstack/react-query"; 
+import {useMutation, useQueryClient  } from "@tanstack/react-query"; 
 import axios from "axios";
 import { toast } from "sonner"
 
-export const getBlocks=()=>{
-    const{data,isLoading}=useQuery({
-        queryKey:["getBlocks"],
-        queryFn:async()=>{
-            const res=await axios.get("/api/page/block")
-            return res.data
-        }
-    })
-    return {data,isLoading}
-}
 
-export const addBlock=()=>{
+export const addButtonBlock=()=>{
     const queryClient = useQueryClient();
     const{mutateAsync,isPending}=useMutation({
         mutationFn:async(values:{type:string,title:string|null,url:string|null})=>{
@@ -62,7 +51,7 @@ export const deleteBlock=()=>{
   return { mutateAsync, isPending }
 }
 
-export const updateBlock=()=>{
+export const updateButtonBlock=()=>{
     const queryClient = useQueryClient();
     const{mutateAsync,isPending}=useMutation({
         mutationFn:async(values:{id:string,title:string,url:string})=>{

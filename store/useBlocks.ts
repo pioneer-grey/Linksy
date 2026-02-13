@@ -5,7 +5,7 @@ type Block = {
     block: block[] | null,
     setBlock: (block: block[]) => void,
     setOneBlock: (block: block, edit?: boolean) => void,
-    lastState: "delete" | "initial" | "reorder",
+    lastState: "delete" | "initial" | "reorder"|"newValue",
     deleteBlock: (id: string) => void,
     reorderBlocks: (activeId: string, overId: string) => void,
 
@@ -30,10 +30,10 @@ export const useBlock = create<Block>()((set) => ({
                         : item
                 );
 
-                return { block: blocks };
+                return { block: blocks ,lastState:"newValue"};
             }
 
-            return { block: [...(state.block || []), block] };
+            return { block: [...(state.block || []), block] ,lastState:"newValue"};
         }),
     reorderBlocks: (activeId, overId) =>
         set((state) => {

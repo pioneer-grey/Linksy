@@ -10,13 +10,13 @@ import {
 } from "@/components/ui/dialog"
 import ButtonBlockForm from './BlockForm/ButtonBlockForm'
 import ImgBlockForm from './BlockForm/ImgBlockForm'
-import { addBlock } from "@/actions/block"
+import { addButtonBlock } from "@/actions/block"
 import { toast } from "sonner"
 import { Link,MailPlus,Image,Plus } from 'lucide-react';
 import { useBlock } from '@/store/useBlocks'
 
 const NewBlock = () => {
-  const { mutateAsync } = addBlock()
+  const { mutateAsync } = addButtonBlock()
   const{setOneBlock}=useBlock()
   
   const createBlockFunc = async (values: { type: string, title: string, url: string }):Promise<void> => {

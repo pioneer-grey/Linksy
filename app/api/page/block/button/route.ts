@@ -77,16 +77,19 @@ export async function PUT(req: NextRequest) {
         const { id, title, url } = await req.json()
 
 
-        await db.update(block).set({
+        const blockResult=await db.update(block).set({
             title: title,
             url: url
-        }).where(and(eq(block.id, id),eq(block.userName,userName)))
+        }).where(and(eq(block.id, id),eq(block.userName,userName))).returning({
+            id:block.id,
+            title:block.title,
+            url:block.url
+        })
 
 
 
         return NextResponse.json({
-            message: "Blocks Updated",
-            success: true
+            block :blockResult[0]
         })
 
     }

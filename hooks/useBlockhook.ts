@@ -1,17 +1,10 @@
 import { useEffect } from "react";
-import { getBlocks, reorderBlock } from "@/actions/block"
+import {reorderBlock } from "@/actions/block"
 import { useBlock } from "@/store/useBlocks";
 
 export const useBlockhook = () => {
-    const { data } = getBlocks()
     const { mutateAsync } = reorderBlock()
-    const { block, lastState, setBlock } = useBlock()
-
-    useEffect(() => {
-        if (data?.blocks) {
-            setBlock(data?.blocks)
-        }
-    }, [data])
+    const { block, lastState} = useBlock()
 
     useEffect(() => {
        if (!block || lastState !== "reorder") return

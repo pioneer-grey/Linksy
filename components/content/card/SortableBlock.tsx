@@ -3,18 +3,21 @@ import { GripVertical, Trash2, Pencil } from "lucide-react"
 import {
   useSortable,
 } from "@dnd-kit/sortable"
-import { updateBlock } from '@/actions/block'
+import { updateButtonBlock } from '@/actions/block'
 import { block } from '@/store/types'
 import { CSS } from "@dnd-kit/utilities"
 import {toast} from "sonner"
 import ButtonBlockForm from "@/components/content/card/BlockForm/ButtonBlockForm"
+import { useBlock } from '@/store/useBlocks'
 type Props = {
   item: block,
   deleteFunc: (id: string) => Promise<void>
 }
 
 const SortableBlock = ({ item, deleteFunc }: Props) => {
-  const{mutateAsync}=updateBlock()
+  const {setOneBlock}=useBlock()
+  
+  const{mutateAsync}=updateButtonBlock()
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: item.id })
 
@@ -31,7 +34,8 @@ const SortableBlock = ({ item, deleteFunc }: Props) => {
         success: "Block edited successfully.",
         error: "Failed to edit block."
       })
-      await res
+      const result=await res
+      setOneBlock(result.block,true)
     }
     catch (err: any) {
       console.log(err)

@@ -23,11 +23,13 @@ import { useHeader } from '@/store/useHeader';
 import CardForm from '../content/card/CardForm';
 import { useIconhook } from "@/hooks/useIconhook";
 import { useHeaderhook } from '@/hooks/useHeaderhook'
+import { useBlockhook } from '@/hooks/useBlockhook'
 
 
 const Content = () => {
     useIconhook()
     useHeaderhook()
+    useBlockhook()
 
     const { header} = useHeader()
     if (!header) return null
