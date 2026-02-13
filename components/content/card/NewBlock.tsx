@@ -8,11 +8,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Plus } from 'lucide-react'
 import ButtonBlockForm from './BlockForm/ButtonBlockForm'
+import ImgBlockForm from './BlockForm/ImgBlockForm'
 import { addBlock } from "@/actions/block"
 import { toast } from "sonner"
-import { Link,MailPlus } from 'lucide-react';
+import { Link,MailPlus,Image,Plus } from 'lucide-react';
 import { useBlock } from '@/store/useBlocks'
 
 const NewBlock = () => {
@@ -77,7 +77,21 @@ const NewBlock = () => {
                 type="email"
                 onSubmit={createBlockFunc}
               />
-
+              <ImgBlockForm
+              trigger={
+                  <div className='flex gap-2 items-center'>
+                    <Button variant={"outline"}
+                    type='button'
+                    >
+                    <Image/>
+                    <h1>Image Button</h1>
+                    </Button>
+                    
+                  </div> 
+                }
+              
+              />
+              
 
             </div>
           </DialogContent>

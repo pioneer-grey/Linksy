@@ -37,12 +37,8 @@ const Blocks = () => {
                                 )
                             case "img":
                                 return(
-                                    <ButtonBlock
-                                    type='img'
-                                    key={i}
-                                    title={item.title}
-                                    url={item.url}
-                                    />
+                                   <>
+                                   </>
                                 )
 
                             default:

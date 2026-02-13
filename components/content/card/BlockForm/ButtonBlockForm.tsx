@@ -103,12 +103,12 @@ const ButtonBlockForm = ({type,trigger,onSubmit,onUpdate,defaultValue,id}:props)
             </div>
           </div>
           <SheetFooter className="p-0">
+             <Button type="submit" 
+            disabled={loading} onClick={submit}>Save</Button>
             <SheetClose asChild>
               <Button variant="outline">Cancel</Button>
             </SheetClose>
-            <Button type="submit" 
-            value={url}
-            disabled={loading} onClick={submit}>Save</Button>
+           
           </SheetFooter>
         </SheetContent>
       </form>

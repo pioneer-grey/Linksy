@@ -1,15 +1,12 @@
 "use client";
 
 import { CircleUserRoundIcon,Upload } from "lucide-react";
-import { UploadAvatar } from "@/actions/header";
 import { useFileUpload } from "@/hooks/use-file-upload";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner"
-import { useHeader } from "@/store/useHeader"; 
+import { toast } from "sonner" 
 
-export default function UploadImg() {
-  const{setPicUrl}=useHeader()
-  const {mutateAsync,isPending}=UploadAvatar()
+export default function UploadImg({onSubmit,isPending}:{onSubmit:(file:File)=>Promise<void>,isPending:boolean}) {
+
   const [{ files }, { removeFile, openFileDialog, getInputProps }] =
     useFileUpload({
       accept: "image/*",
@@ -30,17 +27,7 @@ const submit = async () => {
   }
 
   try {
-    const res = mutateAsync(file);
-  
-    toast.promise(res, {
-      loading: "Uploading image...",
-      success: "Image uploaded successfully",
-      error: (err) => err.message || "Upload failed",
-    });
-
-    const result = await res;
-
-    setPicUrl(result.picURL);
+   await onSubmit(file)
     handleRemoveFile();
 
   } catch (err) {
