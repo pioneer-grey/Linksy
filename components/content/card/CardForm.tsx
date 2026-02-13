@@ -1,5 +1,5 @@
 import React from 'react'
-import CardDialog from './CardDialog'
+import NewBlock from './NewBlock'
 import DisplayBlock from './DisplayBlock'
 import { useBlock } from '@/store/useBlocks'
 const CardForm = () => {
@@ -8,7 +8,7 @@ const CardForm = () => {
     <>
      <div className='flex justify-between items-center border-b pb-1'>
       <h1>New Block</h1>
-       <CardDialog/>
+       <NewBlock/>
     </div>
     {block &&
     <DisplayBlock/>

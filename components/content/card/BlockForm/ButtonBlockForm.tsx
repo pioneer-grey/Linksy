@@ -1,14 +1,14 @@
 import { Button } from "@/components/ui/button"
 import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useEffect, useState } from "react"
@@ -70,19 +70,21 @@ const ButtonBlockForm = ({type,trigger,onSubmit,onUpdate,defaultValue,id}:props)
 
   return (
    <>
-    <Dialog open={open} onOpenChange={()=>setOpen(!open)}>
+   <Sheet open={open} onOpenChange={()=>setOpen(!open)}>
       <form>
-        <DialogTrigger asChild>
+        <SheetTrigger asChild>
           {trigger}
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] bg-card">
-          <DialogHeader>
-            <DialogTitle>{id? "Edit "+info[type].dialogTitle:info[type].dialogTitle}</DialogTitle>
-            <DialogDescription>
+        </SheetTrigger>
+        <SheetContent
+        side="left"
+        className="bg-card p-4">
+          <SheetHeader className="p-0">
+            <SheetTitle>{id? "Edit "+info[type].dialogTitle:info[type].dialogTitle}</SheetTitle>
+            <SheetDescription>
              Add your information below, then click Save to apply changes.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4">
+            </SheetDescription>
+          </SheetHeader>
+          <div className="grid gap-4 mt-3">
             <div className="grid gap-3">
               <Label htmlFor="title">Title</Label>
               <Input name="title" placeholder="Enter Title"
@@ -100,18 +102,17 @@ const ButtonBlockForm = ({type,trigger,onSubmit,onUpdate,defaultValue,id}:props)
               />
             </div>
           </div>
-          <DialogFooter>
-            <DialogClose asChild>
+          <SheetFooter className="p-0">
+            <SheetClose asChild>
               <Button variant="outline">Cancel</Button>
-            </DialogClose>
+            </SheetClose>
             <Button type="submit" 
             value={url}
             disabled={loading} onClick={submit}>Save</Button>
-          </DialogFooter>
-        </DialogContent>
+          </SheetFooter>
+        </SheetContent>
       </form>
-    </Dialog>
-   
+    </Sheet>
    </>
   )
 }

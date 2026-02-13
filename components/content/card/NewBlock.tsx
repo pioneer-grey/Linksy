@@ -15,7 +15,7 @@ import { toast } from "sonner"
 import { Link,MailPlus } from 'lucide-react';
 import { useBlock } from '@/store/useBlocks'
 
-const CardDialog = () => {
+const NewBlock = () => {
   const { mutateAsync } = addBlock()
   const{setOneBlock}=useBlock()
   
@@ -47,7 +47,6 @@ const CardDialog = () => {
                 Choose the block you’d like to add to your profile.
               </DialogDescription>
             </DialogHeader>
-            {/* All Card Block Dialog Content */}
             <div className='flex flex-wrap justify-center items-center gap-2 '>
               <ButtonBlockForm
                 trigger={
@@ -83,8 +82,9 @@ const CardDialog = () => {
             </div>
           </DialogContent>
       </Dialog>
+
     </>
   )
 }
 
-export default CardDialog
+export default NewBlock

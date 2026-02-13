@@ -3,7 +3,7 @@ import { useStyles } from '@/store/useStyles'
 import { shadowMap } from '@/components/display/Header'
 
 type Props = {
-  type: "url" | "img" | "email"
+  type: "url" | "email"
   title?: string | null,
   url: string | null,
 }
@@ -15,7 +15,7 @@ const ButtonBlock = ({ title, url, type }: Props) => {
       ? `mailto:${url ?? "support@example.com"}`
       : url ?? "https://www.example.com"
 
-  const isExternal = (type === "url"|| type==="img")
+  const isExternal = (type === "url")
 
   return (
     <a
@@ -32,15 +32,7 @@ const ButtonBlock = ({ title, url, type }: Props) => {
         backgroundColor: styles?.cardColor || "navy"
       }}
     >
-      {type === "img" ? (
-        <img
-          src="https://github.com/maxleiter.png"
-          alt="Button image"
-          className="h-full object-contain"
-        />
-      ) : (
-        <h1>{title ?? ""}</h1>
-      )}
+      <h1>{title ?? ""}</h1>
     </a>
   )
 }
