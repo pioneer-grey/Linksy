@@ -28,7 +28,7 @@ const SortableBlock = ({ item, deleteFunc }: Props) => {
     <div ref={setNodeRef} style={style}>
       <div className="mt-2 flex items-center gap-1">
 
-        <div className='flex items-center w-full justify-between border-2 p-4 rounded-2xl '>
+        <div className='flex flex-wrap items-center w-full justify-between border-2 p-4 rounded-2xl '>
           <div className='flex gap-1 items-center'>
             <span {...attributes} {...listeners} className="cursor-move">
               <GripVertical size={18} />

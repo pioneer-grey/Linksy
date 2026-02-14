@@ -2,6 +2,7 @@ import React from 'react'
 import { useBlock } from '@/store/useBlocks'
 import { useStyles } from '@/store/useStyles'
 import ButtonBlock from '../content/card/Block/ButtonBlock'
+import ImgBlock from '../content/card/Block/ImgBlock'
 const Blocks = () => {
     const { block } = useBlock()
     const { styles } = useStyles()
@@ -37,8 +38,13 @@ const Blocks = () => {
                                 )
                             case "img":
                                 return(
-                                   <>
-                                   </>
+                                   <ImgBlock
+                                   key={i}
+                                   imgURL={item.imgURL || ""}
+                                   title={item.title || ""}
+                                   url={item.url || ""}
+                                   />
+                                   
                                 )
 
                             default:

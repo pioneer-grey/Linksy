@@ -59,6 +59,7 @@ export async function GET() {
             title:block.title,
             type:block.type,
             url:block.url,
+            imgURL:block.imgURL,
             order:block.order,
         }).from(block).where(eq(block.userName, username)).orderBy(block.order);
 

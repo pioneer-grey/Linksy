@@ -23,14 +23,15 @@ type Props = {
   defaultValue?: {
     title: string,
     url: string,
-    imgURL:string
+    imgURL: string
   },
 }
-const ImgBlockForm = ({ id, defaultValue,trigger }: Props) => {
+const ImgBlockForm = ({ id, defaultValue, trigger }: Props) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [open, setOpen] = useState<boolean>(false)
   const [title, setTitle] = useState<string>("")
   const [url, setUrl] = useState<string>("")
+  const [imgUrl, setImgUrl] = useState<string>("")
 
 
   const [{ files }, { removeFile, openFileDialog, getInputProps }] =
@@ -38,29 +39,32 @@ const ImgBlockForm = ({ id, defaultValue,trigger }: Props) => {
       accept: "image/*",
     });
 
-  let previewUrl = files[0]?.preview || null;
+  const previewUrl = files[0]?.preview || null;
+
+
   const fileName = files[0]?.file.name || null;
   const file = files[0]?.file || null;
+  const fileId = files[0]?.id
 
-   const {mutateAsync}=addImgBlock()
-   const{setOneBlock}=useBlock()
-  
-  const createBlockFunc = async (values:FormData):Promise<void> => {
+  const { mutateAsync } = addImgBlock()
+  const { setOneBlock } = useBlock()
+
+  const createBlockFunc = async (values: FormData): Promise<void> => {
     try {
       const res = mutateAsync(values)
       toast.promise(res, {
         loading: "Creating block…",
         success: "Block created successfully.",
       })
-      const result=await res
-        setOneBlock(result.block)
+      const result = await res
+      setOneBlock(result.block)
     }
     catch (err: any) {
       console.log(err)
     }
   }
 
-  const editBlockFunc = async (values:FormData):Promise<void> => {
+  const editBlockFunc = async (values: FormData): Promise<void> => {
     // try {
     //   const res = updateAsync(values)
     //   toast.promise(res, {
@@ -79,21 +83,21 @@ const ImgBlockForm = ({ id, defaultValue,trigger }: Props) => {
 
   const submit = async () => {
 
-     if (!file || !(file instanceof File)) {
-        toast.error("Image is not selected");
-        return;
-      }
-    
+    if (!file || !(file instanceof File)) {
+      toast.error("Image is not selected");
+      return;
+    }
+
     try {
       setLoading(true)
 
-      const form=new FormData()
-      form.append("img",file)
-      form.append("title",title)
-      form.append("url",url)
+      const form = new FormData()
+      form.append("img", file)
+      form.append("title", title)
+      form.append("url", url)
 
       // id ?  await editBlockFunc():  
-       await createBlockFunc(form)
+      await createBlockFunc(form)
 
 
       setOpen(false)
@@ -105,18 +109,38 @@ const ImgBlockForm = ({ id, defaultValue,trigger }: Props) => {
 
   }
 
+  const resetForm = () => {
+    setTitle("");
+    setUrl("");
+    setImgUrl("");
+    removeFile(fileId);
+  };
+
+
   useEffect(() => {
     if (defaultValue) {
       setTitle(defaultValue.title)
       setUrl(defaultValue.url)
-      previewUrl=defaultValue.imgURL
-
+      setImgUrl(defaultValue.imgURL)
+      console.log("I am Ing ", imgUrl)
     }
-  }, [])
+
+  }, [open])
+
+  useEffect(() => {
+    if (previewUrl) {
+      setImgUrl(previewUrl);
+    }
+  }, [previewUrl]);
 
   return (
     <>
-      <Sheet open={open} onOpenChange={() => setOpen(!open)}>
+      <Sheet open={open} onOpenChange={(v) => {
+        setOpen(v);
+        if (!id) {
+          resetForm();
+        }
+      }}>
         <form>
           <SheetTrigger asChild>
             {trigger}
@@ -152,7 +176,7 @@ const ImgBlockForm = ({ id, defaultValue,trigger }: Props) => {
                 <div className="relative inline-block">
                   <Button
                     type="button"
-                    aria-haspopup="dialog" onClick={openFileDialog}
+                    onClick={openFileDialog}
                     variant={fileName ? "outline" : "default"}
                   >
                     {fileName ? "Change image" : "Select image"}
@@ -166,11 +190,11 @@ const ImgBlockForm = ({ id, defaultValue,trigger }: Props) => {
 
                 </div>
               </div>
-              {previewUrl && (
+              {imgUrl && (
                 <div className="inline-flex gap-2">
-                  <img 
-                  className="rounded-lg"
-                  src={previewUrl || ""} alt="img" />
+                  <img
+                    className="rounded-lg h-48 object-cover w-full"
+                    src={imgUrl || ""} alt="img" />
                 </div>)}
 
             </div>
@@ -178,7 +202,10 @@ const ImgBlockForm = ({ id, defaultValue,trigger }: Props) => {
               <Button type="submit"
                 disabled={loading} onClick={submit}>Save</Button>
               <SheetClose asChild>
-                <Button variant="outline">Cancel</Button>
+                <Button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  variant="outline">Cancel</Button>
               </SheetClose>
 
             </SheetFooter>
