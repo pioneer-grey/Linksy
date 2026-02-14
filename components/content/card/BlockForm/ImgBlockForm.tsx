@@ -14,8 +14,9 @@ import { Label } from "@/components/ui/label"
 import { useEffect, useState } from "react"
 import { useFileUpload } from "@/hooks/use-file-upload"
 import { useBlock } from "@/store/useBlocks"
-import { addImgBlock } from "@/actions/block"
+import { addImgBlock,updateImgBlock } from "@/actions/block"
 import { toast } from "sonner"
+
 
 type Props = {
   id?: string,
@@ -47,6 +48,8 @@ const ImgBlockForm = ({ id, defaultValue, trigger }: Props) => {
   const fileId = files[0]?.id
 
   const { mutateAsync } = addImgBlock()
+  const {mutateAsync:updateFunc}=updateImgBlock()
+
   const { setOneBlock } = useBlock()
 
   const createBlockFunc = async (values: FormData): Promise<void> => {
@@ -57,6 +60,7 @@ const ImgBlockForm = ({ id, defaultValue, trigger }: Props) => {
         success: "Block created successfully.",
       })
       const result = await res
+      console.log("Create \n",result.block)
       setOneBlock(result.block)
     }
     catch (err: any) {
@@ -65,25 +69,25 @@ const ImgBlockForm = ({ id, defaultValue, trigger }: Props) => {
   }
 
   const editBlockFunc = async (values: FormData): Promise<void> => {
-    // try {
-    //   const res = updateAsync(values)
-    //   toast.promise(res, {
-    //     loading: "Editing block…",
-    //     success: "Block edited successfully.",
-    //     error: "Failed to edit block."
-    //   })
-    //   const result=await res
-    //   setOneBlock(result.block,true)
-    // }
-    // catch (err: any) {
-    //   console.log(err)
-    // }
+    try {
+      const res = updateFunc(values)
+      toast.promise(res, {
+        loading: "Editing block…",
+        success: "Block edited successfully.",
+      })
+      const result=await res
+      console.log("Update \n",result.block)
+      setOneBlock(result.block,true)
+    }
+    catch (err: any) {
+      console.log(err)
+    }
   }
 
 
   const submit = async () => {
 
-    if (!file || !(file instanceof File)) {
+    if (!id && (!file || !(file instanceof File))) {
       toast.error("Image is not selected");
       return;
     }
@@ -92,13 +96,17 @@ const ImgBlockForm = ({ id, defaultValue, trigger }: Props) => {
       setLoading(true)
 
       const form = new FormData()
-      form.append("img", file)
+      form.append("img", file as File)
       form.append("title", title)
       form.append("url", url)
 
-      // id ?  await editBlockFunc():  
-      await createBlockFunc(form)
-
+      if(id){
+        form.append("id",id)
+        await editBlockFunc(form)
+      }
+      else{
+        await createBlockFunc(form)
+        }
 
       setOpen(false)
     } catch (err) {
@@ -122,10 +130,9 @@ const ImgBlockForm = ({ id, defaultValue, trigger }: Props) => {
       setTitle(defaultValue.title)
       setUrl(defaultValue.url)
       setImgUrl(defaultValue.imgURL)
-      console.log("I am Ing ", imgUrl)
     }
 
-  }, [open])
+  }, [open,defaultValue])
 
   useEffect(() => {
     if (previewUrl) {

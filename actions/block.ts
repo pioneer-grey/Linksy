@@ -108,3 +108,23 @@ export const addImgBlock=()=>{
   })
   return { mutateAsync, isPending }
 }
+
+export const updateImgBlock=()=>{
+    const{mutateAsync,isPending}=useMutation({
+        mutationFn:async(values:FormData)=>{
+            const res=await axios.put("/api/page/block/img",values)
+            return res.data
+        },
+    onError: (error: any) => {
+      if (axios.isAxiosError(error)) {
+        toast.error(
+          error.response?.data?.message ??
+          "Something went wrong. Please try again."
+        )
+      } else {
+        toast.error("Unexpected error occurred")
+      }
+    },
+  })
+  return { mutateAsync, isPending }
+}

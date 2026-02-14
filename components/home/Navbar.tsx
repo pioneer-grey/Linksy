@@ -34,12 +34,12 @@ const Navbar = () => {
     <>
     <div className="relative w-full">
       <ResizableNavbar className="top-4">
-        <NavBody>
+        <NavBody visible={false}>
           <NavbarLogo />
           <NavItems items={navItems} />
           <div className="flex items-center gap-2">
             <NavbarButton variant="secondary" ><AnimatedThemeToggler varient="ghost"/></NavbarButton>
-            <NavbarButton variant="primary" onClick={()=>router.push("/admin/dashboard")}>Sign in {"->"}</NavbarButton>
+            <NavbarButton variant="primary" onClick={()=>router.push("/admin/dashboard")}>Get Started {"->"}</NavbarButton>
           </div>
         </NavBody>
  
@@ -68,7 +68,7 @@ const Navbar = () => {
               </a>
             ))}
             <div className="flex w-full flex-col gap-4">
-               <NavbarButton variant="primary" onClick={()=>router.push("/signin")}>Sign in</NavbarButton>
+               <NavbarButton variant="primary" onClick={()=>router.push("/admin/dashboard")}>Get Started</NavbarButton>
             </div>
           </MobileNavMenu>
         </MobileNav>

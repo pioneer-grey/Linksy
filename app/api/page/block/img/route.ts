@@ -102,3 +102,90 @@ export async function POST(req: NextRequest) {
     }
 }
 
+
+export async function PUT(req: NextRequest) {
+    try {
+        const session = await auth.api.getSession({
+            headers: await headers()
+        })
+
+        if (!session?.user.userName) {
+            return NextResponse.json({
+                message: "Unauthorized user",
+
+            }, { status: 401 })
+        }
+
+        const userName = session.user.userName
+
+        const formdata = await req.formData()
+
+        const img=formdata.get("img") as File
+        const title=formdata.get("title") as string
+        const url=formdata.get("url") as string 
+        const id=formdata.get("id") as string
+
+        if(!(img instanceof File) || img.size === 0){
+            const blockResult =await db.update(block).set({
+                title:title,
+                url:url
+            }).where(and(eq(block.id,id),eq(block.userName,userName)))
+
+            .returning({
+                title:block.title,
+                id:block.id,
+                url:block.url,
+                imgURL:block.imgURL
+            })
+
+            return NextResponse.json({
+                block:blockResult[0]
+            },{status:200})
+        
+        }
+
+        const imgFileName = `${Date.now()}-button.jpg`;
+
+          const { error: imgError } = await supabase.storage
+                    .from("buttonImg")
+                    .upload(imgFileName, img, {
+                        contentType: "image/jpeg",
+                    });
+        
+                if (imgError) {
+                    return NextResponse.json({
+                        message:"Faild to upload image",
+                    },{status:401})
+                }
+        
+                const { data: imgUrlData } = supabase.storage
+                    .from("buttonImg")
+                    .getPublicUrl(imgFileName);
+
+                const imgUrl = imgUrlData.publicUrl;
+
+
+           const blockResult= await db.update(block).set({
+                imgURL:imgUrl,
+                title: title,
+                url: url,
+            }).where(and(eq(block.id,id),eq(block.userName,userName)))
+
+            .returning({ 
+            id:block.id,
+            title:block.title,
+            url:block.url,
+            imgURL:block.imgURL,
+            })
+
+        return NextResponse.json({
+            block:blockResult[0]
+        })
+    }
+    catch (err) {
+        return NextResponse.json({
+            message: "Internal Server Error"
+        }, { status: 500 })
+    }
+}
+
