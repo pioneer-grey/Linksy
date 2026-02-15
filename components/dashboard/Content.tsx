@@ -68,7 +68,7 @@ const Content = () => {
                                     </TooltipContent>
                                 </Tooltip>
                                 Profile</AccordionTrigger>
-                            <AccordionContent className='h-auto'>
+                            <AccordionContent className='h-auto flex justify-center items-center'>
                                 <UploadImg/>
                             </AccordionContent>
                         </AccordionItem>

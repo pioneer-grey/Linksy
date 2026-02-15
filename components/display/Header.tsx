@@ -34,7 +34,7 @@ const Header = () => {
                         boxShadow: shadowMap[styles?.profilePictureShadow ?? 2],
                     }}
                 >
-                    <Avatar className='w-20 h-20 rounded-full'>
+                    <Avatar className='w-25 h-25 rounded-full'>
                         <AvatarImage
                             className='object-cover'
                             src={header?.picURL || "https://github.com/maxleiter.png"}
