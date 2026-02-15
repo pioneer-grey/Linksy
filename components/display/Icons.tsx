@@ -14,7 +14,7 @@ const Icons = () => {
         <div key={item.id}>
             {Comp&& 
             <a href={item.url ||"https://www.example.com" } target='_blank'>
-                <Comp size={styles?.socialIconSize ?? 20}
+                <Comp size={styles?.socialIconSize ?? 24}
             />
             </a>}
         </div>

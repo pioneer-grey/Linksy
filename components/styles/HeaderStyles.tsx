@@ -125,8 +125,8 @@ const HeaderStyles = () => {
                                     <div className='flex items-center justify-between border-2 p-4 m-2 rounded-2xl'>
                                         <p className='text-sm  font-light'>Social Icon Size</p>
                                         <Slider
-                                            min={18}
-                                            max={28}
+                                            min={22}
+                                            max={32}
                                             value={[field.value]}
                                             step={1}
                                             className={cn("w-[40%]")}
