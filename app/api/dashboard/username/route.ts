@@ -7,7 +7,14 @@ import { eq } from "drizzle-orm";
 
 export async function POST(req: NextRequest) {
     try {
-        const { userName } = await req.json()
+
+        const {userName}=await req.json()
+
+        if (!userName || typeof userName !== 'string' || userName.trim().length === 0) {
+            return NextResponse.json({
+                message: "Invalid username"
+            }, { status: 400 })
+        }
 
         const session = await auth.api.getSession({
             headers: await headers()
@@ -22,23 +29,23 @@ export async function POST(req: NextRequest) {
 
         const userId = session?.user.id as string
 
-        const result = await db.select({ userName: user.userName }).from(user).where(eq(userName, user.userName))
+        const result = await db.select({ userName: user.userName }).from(user).where(eq( user.userName,userName))
 
         if (result.length > 0) {
             return NextResponse.json({
                 message: "Username is taken"
             }, { status: 400 })
         }
-        await db.update(user).set({
+       
+        await db.transaction(async(db)=>{
+
+             await db.update(user).set({
             userName: userName
         }).where(eq(user.id, userId))
 
         // Default Template
-
-      
-        await db.transaction(async(db)=>{
               // Styles
-              
+
             await db.insert(page).values({
             userId: userId,
             userName: userName,
@@ -73,7 +80,7 @@ export async function POST(req: NextRequest) {
         // Headers
         await db.insert(header).values({
             userName: userName,
-            name: "@username",
+            name: `@${userName}`,
             bio: "Turning ideas into usable things."
         })
 

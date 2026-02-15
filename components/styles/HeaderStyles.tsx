@@ -28,7 +28,7 @@ const HeaderStyles = () => {
         defaultValues: {
             profilePictureShadow: styles?.profilePictureShadow ?? 2,
             profilePictureBorder: styles?.profilePictureBorder ?? 2,
-            socialIconSize: styles?.socialIconSize ?? 20,
+            socialIconSize: styles?.socialIconSize ?? 2,
         },
     })
 
