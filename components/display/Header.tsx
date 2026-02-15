@@ -43,10 +43,17 @@ const Header = () => {
                         <AvatarFallback>{styles?.userName?.slice(0, 2).toUpperCase() ?? "LR"}</AvatarFallback>
                     </Avatar>
                 </div>
-                <p className='text-sm max-w-[70%] font-medium leading-none tracking-tight pb-2'>{header?.name}</p>
+                 {header?.name && (
+                <h1 className='text-sm max-w-[70%] font-bold leading-none tracking-tight '>{header?.name}</h1>
+
+                 )}   
+                 
+                {header?.bio &&(
                 <p
                     className=' max-w-[70%] text-center text-[11px] leading-snug '
-                >{header?.bio}</p>
+                >{header.bio}</p>
+                )}
+               
             </header>
 
         </>

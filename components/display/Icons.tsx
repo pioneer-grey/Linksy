@@ -7,7 +7,7 @@ const Icons = () => {
     const {styles}=useStyles()
   return (
     <>
-    <div className='flex flex-wrap pl-2 pr-2 gap-1 items-center h-auto justify-center w-full'>
+    <div className='flex flex-wrap px-2 gap-1 items-center h-auto justify-center w-full'>
     { icon && icon.map((item,i)=>{
         const Comp=IconDetails(item.type)?.icon
         return (
