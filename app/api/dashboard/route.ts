@@ -19,6 +19,7 @@ export async function GET() {
 
             }, { status: 401 })
         }
+
         if(!session.user.userName){
             return NextResponse.json({
                 success: false
@@ -28,7 +29,10 @@ export async function GET() {
         const userId = session?.user.id as string
         const username=session.user.userName
 
-        const styleResult = await db.select({
+        const {styleResult,headerResult,
+            socialResult,blockResult}= await db.transaction(async(tx)=>{
+            
+        const styleResult = await tx.select({
             userName: page.userName,
             primaryTextColor: page.primaryTextColor,
             primaryBackground: page.primaryBackground,
@@ -45,16 +49,16 @@ export async function GET() {
             cardSpacing: page.cardSpacing
         }).from(page).where(eq(page.userId, userId))
 
-        const headerResult = await db.select().from(header).where(eq(header.userName, username))
+        const headerResult = await tx.select().from(header).where(eq(header.userName, username))
        
-        const socialResult = await db.select({
+        const socialResult = await tx.select({
             id:social.id,
             type:social.type,
             url:social.url,
             order:social.order,
         }).from(social).where(eq(social.userName, username)).orderBy(social.order);
        
-        const blockResult = await db.select({
+        const blockResult = await tx.select({
              id:block.id,
             title:block.title,
             type:block.type,
@@ -62,6 +66,10 @@ export async function GET() {
             imgURL:block.imgURL,
             order:block.order,
         }).from(block).where(eq(block.userName, username)).orderBy(block.order);
+
+        return {socialResult,styleResult,headerResult,blockResult}
+            })
+       
 
         return NextResponse.json({
             success: true,

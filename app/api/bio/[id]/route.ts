@@ -11,15 +11,50 @@ export async function GET(
     try {
         const { id: userName } = await params
 
-        const [pageResult, headerResult, socialResult, blockResult] =
-            await Promise.all([
-                db.select().from(page).where(eq(page.userName, userName)).limit(1),
-                db.select().from(header).where(eq(header.userName, userName)).limit(1),
-                db.select().from(social).where(eq(social.userName, userName)),
-                db.select().from(block).where(eq(block.userName, userName)),
-            ])
+        const { styleResult, headerResult, 
+            socialResult, blockResult } =
 
-        if (pageResult.length == 0) {
+            await db.transaction(async (tx) => {
+
+                const styleResult = await tx.select({
+                    userName: page.userName,
+                    primaryTextColor: page.primaryTextColor,
+                    primaryBackground: page.primaryBackground,
+                    desktopBackgroundColor: page.desktopBackgroundColor,
+                    profilePictureShadow: page.profilePictureShadow,
+                    profilePictureBorder: page.profilePictureBorder,
+                    socialIconSize: page.socialIconSize,
+                    cardColor: page.cardColor,
+                    cardTextColor: page.cardTextColor,
+                    cardCorner: page.cardCorner,
+                    cardBorder: page.cardBorder,
+                    cardBorderColor: page.cardBorderColor,
+                    cardShadow: page.cardShadow,
+                    cardSpacing: page.cardSpacing
+                }).from(page).where(eq(page.userName, userName))
+
+                const headerResult = await tx.select().from(header).where(eq(header.userName, userName))
+
+                const socialResult = await tx.select({
+                    id: social.id,
+                    type: social.type,
+                    url: social.url,
+                    order: social.order,
+                }).from(social).where(eq(social.userName, userName)).orderBy(social.order);
+
+                const blockResult = await tx.select({
+                    id: block.id,
+                    title: block.title,
+                    type: block.type,
+                    url: block.url,
+                    imgURL: block.imgURL,
+                    order: block.order,
+                }).from(block).where(eq(block.userName, userName)).orderBy(block.order);
+                return { socialResult, styleResult, headerResult, blockResult }
+
+            })
+
+        if (styleResult.length == 0) {
             return NextResponse.json(
                 { error: "Not found" },
                 { status: 404 }
@@ -27,7 +62,7 @@ export async function GET(
         }
 
         return NextResponse.json({
-            styles: pageResult[0],
+            styles: styleResult[0],
             header: headerResult[0],
             icon: socialResult,
             block: blockResult,
