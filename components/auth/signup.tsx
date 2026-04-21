@@ -24,6 +24,7 @@ import {
 import { cn } from "@/lib/utils"
 import { FieldDescription } from '../ui/field'
 import { SignupAction } from '@/actions/auth'
+import { useRouter } from 'next/navigation'
 export const formSchema = z.object({
   name: z
     .string()
@@ -63,10 +64,13 @@ export const Signup = ({
     },
   })
 
+  const router=useRouter()
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsloading(true)
       await SignupAction(values.name, values.email, values.password)
+      router.push("/admin/dashboard")
     }
     catch (err: any) {
       toast.error(err?.message)

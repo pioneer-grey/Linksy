@@ -9,25 +9,26 @@ const Display = () => {
   const { styles } = useStyles()
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100"
-        style={{ backgroundColor: styles?.desktopBackgroundColor || "" }}
-      >
-        <div className={
-          cn("relative  w-full max-w-[300px] aspect-[10/21] rounded-[2.5rem] border-2 border-black shadow-2xl overflow-hidden bg-amber-500")}
-          style={{
-            color: styles?.primaryTextColor || "",
-            backgroundColor: styles?.primaryBackground || ""
-          }}
-        >
-          <ScrollArea className='overflow-auto h-full'>
-          <Header />
-          <Icons/>
-          <Blocks/>
-          </ScrollArea>
-          
-        </div>
-      </div>
-
+ <div
+  className="min-h-screen flex items-center justify-center bg-gray-100 p-4"
+  style={{ backgroundColor: styles?.desktopBackgroundColor || "" }}
+>
+  <div
+    className={cn(
+      "relative w-[min(300px,90vw)] aspect-[10/21] rounded-[2.5rem] border-2 border-black shadow-2xl overflow-hidden"
+    )}
+    style={{
+      color: styles?.primaryTextColor || "",
+      backgroundColor: styles?.primaryBackground || "",
+    }}
+  >
+    <ScrollArea className="h-full w-full">
+      <Header />
+      <Icons />
+      <Blocks />
+    </ScrollArea>
+  </div>
+</div>
 
     </>
   )

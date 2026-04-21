@@ -8,12 +8,12 @@ import { redirect } from "next/navigation"
 export async function SignupAction(name:string,email:string,password:string){
     await auth.api.signUpEmail({
         body:{
+            name,
             email,
             password,
-            name
+           
         }
     })
-    redirect("/admin/dashboard")
 }
 export async function SigninAction(email:string,password:string){
     await auth.api.signInEmail({
@@ -22,7 +22,6 @@ export async function SigninAction(email:string,password:string){
             password,
         }
     })
-    redirect("/admin/dashboard")
 }
 
 export async function SignoutAction(){
