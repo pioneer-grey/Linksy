@@ -7,12 +7,19 @@ import { eq } from "drizzle-orm";
 
 export async function PUT(req: NextRequest) {
     try {
-        const session = await auth.api.getSession({
+         const session = await auth.api.getSession({
             headers: await headers()
         })
-        if (!session?.user?.id) return NextResponse.error();
-        const styles = await req.json()
-        const userName = styles.userName
+
+       if (!session?.user?.userName) {
+                return NextResponse.json({
+                message: "Unauthorized user",
+
+            }, { status: 401 })
+            }
+
+        const userName=session.user.userName
+        const styles =await req.json()
 
         await db
             .update(page)

@@ -24,7 +24,7 @@ import CardForm from '../content/card/CardForm';
 import { useIconhook } from "@/hooks/useIconhook";
 import { useHeaderhook } from '@/hooks/useHeaderhook'
 import { useBlockhook } from '@/hooks/useBlockhook'
-
+import TemplateDialog from "@/components/templates/TemplateDialog"
 
 const Content = () => {
     useIconhook()
@@ -48,9 +48,14 @@ const Content = () => {
                             <IconExternalLink />
                         </Button>
                     </ButtonGroup>
-                    <Button size={"icon"}>
+                    <TemplateDialog
+                    trigger={
+                         <Button size={"icon"}>
                          <LayoutPanelTop/> 
                     </Button>
+                    }
+                    />
+
                 </header>
                 {/* Header */}
                 <div className='p-4 '>
