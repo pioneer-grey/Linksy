@@ -7,7 +7,7 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Info } from 'lucide-react';
+import { Info, LayoutPanelTop  } from 'lucide-react';
 import { IconExternalLink } from '@tabler/icons-react';
 import {
     Accordion,
@@ -39,7 +39,7 @@ const Content = () => {
     return (
         <>
             <div className='bg-card max-h-screen h-full overflow-auto'>
-                <header className='flex justify-center items-center  border-b p-4'>
+                <header className='flex justify-evenly items-center  border-b p-4'>
                     <ButtonGroup>
                         <Input readOnly defaultValue={process.env.NEXT_PUBLIC_PROJECT_URL + (header?.userName || "")} />
                         <Button
@@ -48,6 +48,9 @@ const Content = () => {
                             <IconExternalLink />
                         </Button>
                     </ButtonGroup>
+                    <Button size={"icon"}>
+                         <LayoutPanelTop/> 
+                    </Button>
                 </header>
                 {/* Header */}
                 <div className='p-4 '>
